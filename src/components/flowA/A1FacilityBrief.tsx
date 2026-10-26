@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Building, MapPin, Layers, Users, ArrowRight, ShieldCheck, Info } from 'lucide-react';
 import { useApp } from '../../context/AppContext.tsx';
 import { StatusChip } from '../shared/StatusChip.tsx';
+import { FACILITY_ASSETS } from '../../data/sampleData.ts';
 
 export const A1FacilityBrief: React.FC = () => {
   const { facilityBrief, updateFacilityBrief, setFlowStep } = useApp();
@@ -47,9 +48,9 @@ export const A1FacilityBrief: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW A</span>
+            <span>BUSINESS PORTAL</span>
             <span>/</span>
-            <span>B2B FACILITY PLANNING</span>
+            <span>PLAN A FACILITY</span>
             <span>/</span>
             <span className="text-[var(--accent-text)]">A1 BRIEF</span>
           </div>
@@ -106,12 +107,19 @@ export const A1FacilityBrief: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* 5-a-side pitch */}
-              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold text-[var(--heading-color)]">5-a-side Pitches</div>
-                  <div className="text-[11px] text-[var(--muted-color)]">Artificial turf & perimeter netting</div>
+              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={FACILITY_ASSETS.pitches5aSide.imageUrl}
+                    alt="5-a-side pitch"
+                    className="w-12 h-12 object-cover border border-[var(--border-color)] shrink-0"
+                  />
+                  <div>
+                    <div className="text-xs font-bold text-[var(--heading-color)]">5-a-side Pitches</div>
+                    <div className="text-[11px] text-[var(--muted-color)]">Artificial turf & netting</div>
+                  </div>
                 </div>
-                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)]">
+                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)] shrink-0">
                   <button
                     type="button"
                     onClick={() => updateFacilityBrief({ pitches5aSide: Math.max(0, facilityBrief.pitches5aSide - 1) })}
@@ -133,12 +141,19 @@ export const A1FacilityBrief: React.FC = () => {
               </div>
 
               {/* Olympic Pool */}
-              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold text-[var(--heading-color)]">Olympic Pool (50m)</div>
-                  <div className="text-[11px] text-[var(--muted-color)]">10 lanes, chilled filtration system</div>
+              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={FACILITY_ASSETS.olympicPools.imageUrl}
+                    alt="Olympic Pool"
+                    className="w-12 h-12 object-cover border border-[var(--border-color)] shrink-0"
+                  />
+                  <div>
+                    <div className="text-xs font-bold text-[var(--heading-color)]">Olympic Pool (50m)</div>
+                    <div className="text-[11px] text-[var(--muted-color)]">10 competition lanes</div>
+                  </div>
                 </div>
-                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)]">
+                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)] shrink-0">
                   <button
                     type="button"
                     onClick={() => updateFacilityBrief({ olympicPools: Math.max(0, facilityBrief.olympicPools - 1) })}
@@ -160,12 +175,19 @@ export const A1FacilityBrief: React.FC = () => {
               </div>
 
               {/* Smaller Pool */}
-              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold text-[var(--heading-color)]">Training Pool (25m)</div>
-                  <div className="text-[11px] text-[var(--muted-color)]">Warm-up & youth swimming</div>
+              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={FACILITY_ASSETS.smallerPools.imageUrl}
+                    alt="Training Pool"
+                    className="w-12 h-12 object-cover border border-[var(--border-color)] shrink-0"
+                  />
+                  <div>
+                    <div className="text-xs font-bold text-[var(--heading-color)]">Training Pool (25m)</div>
+                    <div className="text-[11px] text-[var(--muted-color)]">Warm-up & youth swimming</div>
+                  </div>
                 </div>
-                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)]">
+                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)] shrink-0">
                   <button
                     type="button"
                     onClick={() => updateFacilityBrief({ smallerPools: Math.max(0, facilityBrief.smallerPools - 1) })}
@@ -187,12 +209,19 @@ export const A1FacilityBrief: React.FC = () => {
               </div>
 
               {/* Indoor Hall */}
-              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold text-[var(--heading-color)]">Indoor Multi-Sport Hall</div>
-                  <div className="text-[11px] text-[var(--muted-color)]">Basketball, handball, futsal</div>
+              <div className="p-3.5 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={FACILITY_ASSETS.indoorHalls.imageUrl}
+                    alt="Indoor Multi-Sport Hall"
+                    className="w-12 h-12 object-cover border border-[var(--border-color)] shrink-0"
+                  />
+                  <div>
+                    <div className="text-xs font-bold text-[var(--heading-color)]">Indoor Multi-Sport Hall</div>
+                    <div className="text-[11px] text-[var(--muted-color)]">Basketball, handball, futsal</div>
+                  </div>
                 </div>
-                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)]">
+                <div className="flex items-center border border-[var(--border-color)] bg-[var(--panel-bg)] shrink-0">
                   <button
                     type="button"
                     onClick={() => updateFacilityBrief({ indoorHalls: Math.max(0, facilityBrief.indoorHalls - 1) })}
@@ -230,7 +259,7 @@ export const A1FacilityBrief: React.FC = () => {
                   className="w-full px-3 py-2.5 text-xs bg-[var(--inset-bg)] border border-[var(--border-color)] text-[var(--heading-color)] focus-visible:outline-2 focus-visible:outline-[var(--accent-red)] font-medium"
                 />
                 <span className="block text-[11px] text-[var(--muted-color)] mt-1">
-                  Applies Doha extreme summer heat standards (&gt;48°C ambient, high UV index).
+                  Applies Doha extreme summer heat conditions and high UV index.
                 </span>
               </div>
 

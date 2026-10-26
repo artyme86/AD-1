@@ -19,6 +19,8 @@ export type Persona = 'Club' | 'Supplier' | 'Coach' | 'Parent';
 export type RoleType = 'Client' | 'Provider';
 export type FlowId = 'A' | 'B' | 'C';
 export type ViewportMode = 'responsive' | 'mobile390';
+export type PortalType = 'business' | 'individual' | 'academic' | 'athlete' | null;
+export type BusinessMode = 'buying' | 'selling';
 
 export interface FacilityBrief {
   ownerType: 'Club' | 'Academy' | 'Developer' | 'Hotel or resort';
@@ -50,6 +52,19 @@ export interface SupplierRequestItem {
   };
 }
 
+export interface TenderBid {
+  id: string;
+  requestId: string;
+  supplierId: string;
+  priceQar: number;
+  product: string;
+  deliveryWeeks: number;
+  warrantyYears: number;
+  notes: string;
+  source: 'live' | 'simulated';
+  submittedAt: string;
+}
+
 export interface CoachApplication {
   id: string;
   vacancyId: string;
@@ -78,6 +93,13 @@ export interface SessionRequest {
 }
 
 interface AppContextType {
+  // Portal & Mode
+  portal: PortalType;
+  setPortal: (portal: PortalType) => void;
+  mode: BusinessMode;
+  setMode: (mode: BusinessMode) => void;
+  resetDemoData: () => void;
+
   // Theme & Layout
   theme: 'dark' | 'light';
   setTheme: (theme: 'dark' | 'light') => void;
@@ -92,13 +114,18 @@ interface AppContextType {
   viewportMode: ViewportMode;
   setViewportMode: (mode: ViewportMode) => void;
 
-  // Flow A State (B2B Facility)
+  // Facility & Tender State
   facilityBrief: FacilityBrief;
   updateFacilityBrief: (updates: Partial<FacilityBrief>) => void;
   isTenderSent: boolean;
   bidDeadlineDays: 7 | 14 | 21;
   setBidDeadlineDays: (days: 7 | 14 | 21) => void;
   sendTender: () => void;
+  tenderPackages: SupplierRequestItem[];
+  bids: TenderBid[];
+  selectedPackageForComparison: string;
+  setSelectedPackageForComparison: (pkgId: string) => void;
+  simulateSupplierBids: (requestId: string) => void;
   suppliers: Supplier[];
   awardedSupplierId: string | null;
   awardSupplier: (supplierId: string) => void;
@@ -108,7 +135,7 @@ interface AppContextType {
   submitSupplierBid: (requestId: string, bidData: { priceQar: number; product: string; deliveryWeeks: number; warrantyYears: number; notes: string }) => void;
   declineSupplierRequest: (requestId: string) => void;
 
-  // Flow B State (Club Hires Coach)
+  // Coaching & Vacancies State
   coaches: Coach[];
   updateCoachProfile: (coachId: string, updates: Partial<Coach>) => void;
   vacancies: Vacancy[];
@@ -125,7 +152,7 @@ interface AppContextType {
   setSelectedCoachForView: (coachId: string) => void;
   requestInterview: (vacancyId: string, coachId: string) => void;
 
-  // Flow C State (Parent Finds Coach)
+  // Private Coaching & Booking State
   parentSearch: {
     sport: string;
     childAge: number;
@@ -164,13 +191,180 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// Helper function to build packages based on facility brief
+export function generatePackagesFromBrief(brief: FacilityBrief, deadlineDays: number): SupplierRequestItem[] {
+  const pkgs: SupplierRequestItem[] = [];
+
+  if (brief.pitches5aSide > 0) {
+    pkgs.push(
+      {
+        id: 'pkg-turf',
+        title: 'Premium artificial turf pitch package',
+        category: 'Sports Surfaces & Civil Works',
+        facility: `${brief.ownerType} Facility (Sample)`,
+        location: brief.location,
+        tier: brief.qualityTier,
+        deadlineDays,
+        status: 'New',
+        specs: [
+          'UV-stabilised polyethylene monofilament 50mm pile height',
+          'heat-limiting infill designed to reduce surface heat; supplier to document performance',
+          'Shock pad elastic layer with laser-levelled crushed stone sub-base',
+          'relevant international quality certification, to be stated by the bidder',
+          'UV warranty period to be stated by the bidder'
+        ]
+      },
+      {
+        id: 'pkg-light',
+        title: 'High-mast LED floodlighting package',
+        category: 'Electrical & Optics',
+        facility: `${brief.ownerType} Facility (Sample)`,
+        location: brief.location,
+        tier: brief.qualityTier,
+        deadlineDays,
+        status: 'New',
+        specs: [
+          'IP66 dust-sealed sports field floodlights',
+          '750 lux sports field coverage with anti-glare cut-off',
+          'Passive heat dissipation rated for continuous summer operation'
+        ]
+      },
+      {
+        id: 'pkg-nets',
+        title: 'Perimeter ball catch netting package',
+        category: 'Safety & Enclosures',
+        facility: `${brief.ownerType} Facility (Sample)`,
+        location: brief.location,
+        tier: brief.qualityTier,
+        deadlineDays,
+        status: 'New',
+        specs: [
+          '6m height perimeter containment netting',
+          'High-tenacity UV-stabilized knotless polypropylene',
+          'Engineered for regional wind-load conditions'
+        ]
+      },
+      {
+        id: 'pkg-seats',
+        title: 'Spectator seating and shading package',
+        category: 'Architectural Tensile',
+        facility: `${brief.ownerType} Facility (Sample)`,
+        location: brief.location,
+        tier: brief.qualityTier,
+        deadlineDays,
+        status: 'New',
+        specs: [
+          'Modular spectator grandstand seating (500 seats)',
+          'UV-inhibited polyolefin copolymer seats',
+          'Architectural tensioned shade canopy structure'
+        ]
+      }
+    );
+  }
+
+  if (brief.olympicPools > 0) {
+    pkgs.push({
+      id: 'pkg-olympic',
+      title: 'Olympic pool package',
+      category: 'Heavy Aquatics Engineering',
+      facility: `${brief.ownerType} Facility (Sample)`,
+      location: brief.location,
+      tier: brief.qualityTier,
+      deadlineDays,
+      status: 'New',
+      specs: [
+        'Olympic 50m pool equipment and basin fittings',
+        'High-capacity active heat-exchange water chilling plant',
+        'Multi-layer high-rate sand filtration with regenerative ozone treatment',
+        'Fittings to be confirmed against the current World Aquatics facility requirements'
+      ]
+    });
+  }
+
+  if (brief.smallerPools > 0) {
+    pkgs.push({
+      id: 'pkg-training-pool',
+      title: 'Training pool package',
+      category: 'Aquatics Engineering',
+      facility: `${brief.ownerType} Facility (Sample)`,
+      location: brief.location,
+      tier: brief.qualityTier,
+      deadlineDays,
+      status: 'New',
+      specs: [
+        '25m training pool hydraulic pump package',
+        'Automated water sanitation and filtration system',
+        'Dedicated temperature balancing circulation'
+      ]
+    });
+  }
+
+  if (brief.indoorHalls > 0) {
+    pkgs.push({
+      id: 'pkg-indoor-hall',
+      title: 'Indoor hall package',
+      category: 'Indoor Sports Facilities',
+      facility: `${brief.ownerType} Facility (Sample)`,
+      location: brief.location,
+      tier: brief.qualityTier,
+      deadlineDays,
+      status: 'New',
+      specs: [
+        'Multi-sport sprung wooden or polyurethane surface',
+        'Acoustic wall panelling and integrated scoring console',
+        'Indoor environmental temperature control integration'
+      ]
+    });
+  }
+
+  return pkgs;
+}
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [portal, setPortalState] = useState<PortalType>(null);
+  const [mode, setModeState] = useState<BusinessMode>('buying');
   const [persona, setPersonaState] = useState<Persona>('Club');
   const [activeFlow, setActiveFlowState] = useState<FlowId>('A');
   const [flowStep, setFlowStep] = useState<string>('A1');
   const [viewportMode, setViewportMode] = useState<ViewportMode>('responsive');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const setPortal = (newPortal: PortalType) => {
+    setPortalState(newPortal);
+    if (newPortal === 'business') {
+      if (mode === 'selling') {
+        setPersonaState('Supplier');
+        setActiveFlowState('A');
+        setFlowStep('A4');
+      } else {
+        setPersonaState('Club');
+        setActiveFlowState('A');
+        setFlowStep('A1');
+      }
+    } else if (newPortal === 'individual') {
+      setPersonaState('Coach');
+      setActiveFlowState('B');
+      setFlowStep('B1');
+    } else if (newPortal === 'athlete') {
+      setPersonaState('Parent');
+      setActiveFlowState('C');
+      setFlowStep('C1');
+    }
+  };
+
+  const setMode = (newMode: BusinessMode) => {
+    setModeState(newMode);
+    if (newMode === 'buying') {
+      setPersonaState('Club');
+      setActiveFlowState('A');
+      setFlowStep('A1');
+    } else {
+      setPersonaState('Supplier');
+      setActiveFlowState('A');
+      setFlowStep('A4');
+    }
+  };
 
   // Verification Modal
   const [verifiedModalData, setVerifiedModalData] = useState<{
@@ -202,31 +396,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  // Handle Persona Switching and sync default Flow & Step
+  // Handle Persona Switching and sync default Portal, Flow & Step
   const setPersona = (newPersona: Persona) => {
     setPersonaState(newPersona);
     if (newPersona === 'Club') {
-      if (activeFlow === 'C') {
-        setActiveFlowState('A');
-        setFlowStep('A1');
-      } else if (activeFlow === 'B') {
-        setFlowStep('B5');
-      } else {
-        setFlowStep('A1');
-      }
+      setPortalState('business');
+      setModeState('buying');
+      setActiveFlowState('A');
+      setFlowStep('A1');
     } else if (newPersona === 'Supplier') {
+      setPortalState('business');
+      setModeState('selling');
       setActiveFlowState('A');
       setFlowStep('A4');
     } else if (newPersona === 'Coach') {
-      if (activeFlow === 'A') {
-        setActiveFlowState('B');
-        setFlowStep('B1');
-      } else if (activeFlow === 'B') {
-        setFlowStep('B1');
-      } else if (activeFlow === 'C') {
-        setFlowStep('C6');
-      }
+      setPortalState('individual');
+      setActiveFlowState('B');
+      setFlowStep('B1');
     } else if (newPersona === 'Parent') {
+      setPortalState('athlete');
       setActiveFlowState('C');
       setFlowStep('C1');
     }
@@ -240,7 +428,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (persona === 'Supplier') {
         setFlowStep('A4');
       } else {
-        // Club
         setFlowStep('A1');
       }
     } else if (flow === 'B') {
@@ -258,7 +445,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  // Flow A State
+  // Facility State
   const [facilityBrief, setFacilityBrief] = useState<FacilityBrief>({
     ownerType: 'Club',
     pitches5aSide: 1,
@@ -280,65 +467,88 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [awardedSupplierId, setAwardedSupplierId] = useState<string | null>(null);
   const [awardStage, setAwardStage] = useState<'Awarded' | 'Agreement' | 'Shipping' | 'After-sales'>('Awarded');
 
-  const [supplierRequests, setSupplierRequests] = useState<SupplierRequestItem[]>([
-    {
-      id: 'req-turf-1',
-      title: 'Artificial Turf Pitch Package (FIFA Quality Pro)',
-      category: 'Sports Surfaces & Civil Works',
-      facility: 'Club Athletic Facility (Sample)',
-      location: 'Doha, Qatar',
-      tier: 'Premium',
-      deadlineDays: 14,
-      status: 'New',
-      specs: [
-        'UV-stabilised polyethylene monofilament 50mm pile height',
-        'Heat-limiting infill system engineered for Doha temperatures >48°C',
-        'Shock pad elastic layer with laser-levelled crushed stone base',
-        'Full FIFA Quality Pro test certificate & 8+ year UV warranty'
-      ]
-    }
-  ]);
+  // Bids array: starts empty! Bids come from actions only.
+  const [bids, setBids] = useState<TenderBid[]>([]);
+
+  // Generated tender packages from brief
+  const tenderPackages = generatePackagesFromBrief(facilityBrief, bidDeadlineDays);
+
+  const [selectedPackageForComparison, setSelectedPackageForComparison] = useState<string>('pkg-turf');
+
+  // Supplier requests initially generated or synced
+  const [supplierRequests, setSupplierRequests] = useState<SupplierRequestItem[]>([]);
 
   const sendTender = () => {
     setIsTenderSent(true);
-    // Ensure the supplier's inbox has the active tender
-    setSupplierRequests((prev) => {
-      const exists = prev.some((r) => r.id === 'req-turf-1');
-      if (exists) {
-        return prev.map((r) =>
-          r.id === 'req-turf-1'
-            ? { ...r, deadlineDays: bidDeadlineDays, status: 'New' }
-            : r
-        );
-      }
-      return [
-        {
-          id: 'req-turf-1',
-          title: 'Artificial Turf Pitch Package (FIFA Quality Pro)',
-          category: 'Sports Surfaces & Civil Works',
-          facility: 'Club Athletic Facility (Sample)',
-          location: 'Doha, Qatar',
-          tier: facilityBrief.qualityTier,
-          deadlineDays: bidDeadlineDays,
-          status: 'New',
-          specs: [
-            'UV-stabilised polyethylene monofilament 50mm pile height',
-            'Heat-limiting infill system engineered for Doha temperatures >48°C',
-            'Shock pad elastic layer with laser-levelled crushed stone base',
-            'Full FIFA Quality Pro test certificate & 8+ year UV warranty'
-          ]
-        },
-        ...prev
-      ];
-    });
-    showToast('Tender published to verified suppliers. 3 bids received on turf package.');
+    const pkgs = generatePackagesFromBrief(facilityBrief, bidDeadlineDays);
+    setSupplierRequests(pkgs);
+    if (pkgs.length > 0 && !pkgs.some((p) => p.id === selectedPackageForComparison)) {
+      setSelectedPackageForComparison(pkgs[0].id);
+    }
+    showToast('Tender published to verified suppliers.');
   };
 
-  const submitSupplierBid = (requestId: string, bidData: { priceQar: number; product: string; deliveryWeeks: number; warrantyYears: number; notes: string }) => {
+  const submitSupplierBid = (
+    requestId: string,
+    bidData: { priceQar: number; product: string; deliveryWeeks: number; warrantyYears: number; notes: string }
+  ) => {
+    // Add live bid
+    const newBid: TenderBid = {
+      id: `bid-live-${Date.now()}`,
+      requestId,
+      supplierId: suppliers[0].id,
+      priceQar: bidData.priceQar,
+      product: bidData.product,
+      deliveryWeeks: bidData.deliveryWeeks,
+      warrantyYears: bidData.warrantyYears,
+      notes: bidData.notes,
+      source: 'live',
+      submittedAt: 'Just now'
+    };
+
+    setBids((prev) => [newBid, ...prev.filter((b) => !(b.requestId === requestId && b.supplierId === suppliers[0].id))]);
+
     setSupplierRequests((prev) =>
       prev.map((r) => (r.id === requestId ? { ...r, status: 'Bid sent', submittedBid: bidData } : r))
     );
-    showToast('Bid successfully transmitted to Club tender evaluation committee.');
+
+    showToast('Bid submitted to client.');
+  };
+
+  const simulateSupplierBids = (requestId: string) => {
+    const simBid1: TenderBid = {
+      id: `bid-sim-1-${Date.now()}`,
+      requestId,
+      supplierId: suppliers[1].id,
+      priceQar: 920000,
+      product: 'DesertCool Turf 55 (Sample)',
+      deliveryWeeks: 4,
+      warrantyYears: 10,
+      notes: 'Patented yarn extrusion suited to Doha summer conditions. 4-week expedited port transit.',
+      source: 'simulated',
+      submittedAt: 'Simulated'
+    };
+
+    const simBid2: TenderBid = {
+      id: `bid-sim-2-${Date.now()}`,
+      requestId,
+      supplierId: suppliers[2].id,
+      priceQar: 960000,
+      product: 'MaxDur Ultra Turf 60 (Sample)',
+      deliveryWeeks: 8,
+      warrantyYears: 12,
+      notes: '12-year manufacturer warranty with annual fiber pull-test and infill rejuvenation audits.',
+      source: 'simulated',
+      submittedAt: 'Simulated'
+    };
+
+    setBids((prev) => [
+      ...prev.filter((b) => b.requestId !== requestId || b.source !== 'simulated'),
+      simBid1,
+      simBid2
+    ]);
+
+    showToast('Two simulated bids added for evaluation.');
   };
 
   const declineSupplierRequest = (requestId: string) => {
@@ -354,7 +564,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast(`Tender officially awarded to ${suppliers.find((s) => s.id === supplierId)?.name || 'selected supplier'}.`);
   };
 
-  // Flow B State
+  // Coaching & Vacancies State
   const [coaches, setCoaches] = useState<Coach[]>(INITIAL_COACHES);
   const [vacancies, setVacancies] = useState<Vacancy[]>(INITIAL_VACANCIES);
   const [selectedVacancyId, setSelectedVacancyId] = useState<string>('vac-1');
@@ -451,7 +661,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast('Interview request sent to coach. Stepper updated.');
   };
 
-  // Flow C State
+  // Private Coaching & Booking State
   const [parentSearch, setParentSearch] = useState({
     sport: 'Football',
     childAge: 9,
@@ -476,7 +686,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       slotId: 'slot-1',
       slotDay: 'Tuesday',
       slotTime: '16:30 – 17:30',
-      slotLocation: 'Pitch 2, Al Duhail Grounds, Doha',
+      slotLocation: 'Pitch 2, Falcon Sports Grounds, Doha',
       childFirstName: 'Sami',
       childAge: 9,
       childLevel: 'Intermediate',
@@ -520,6 +730,69 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  // Reset demo data to initial state
+  const resetDemoData = () => {
+    setPortalState(null);
+    setModeState('buying');
+    setPersonaState('Club');
+    setActiveFlowState('A');
+    setFlowStep('A1');
+    setViewportMode('responsive');
+    setFacilityBrief({
+      ownerType: 'Club',
+      pitches5aSide: 1,
+      olympicPools: 1,
+      smallerPools: 1,
+      indoorHalls: 0,
+      location: 'Doha, Qatar',
+      qualityTier: 'Premium',
+      includeStaffingPlan: true
+    });
+    setIsTenderSent(false);
+    setBidDeadlineDays(14);
+    setBids([]);
+    setSupplierRequests([]);
+    setSelectedPackageForComparison('pkg-turf');
+    setAwardedSupplierId(null);
+    setAwardStage('Awarded');
+    setCoaches(INITIAL_COACHES);
+    setVacancies(INITIAL_VACANCIES);
+    setSelectedVacancyId('vac-1');
+    setApplications([
+      {
+        id: 'app-sample-1',
+        vacancyId: 'vac-1',
+        coachId: 'coach-1',
+        status: 'Shortlisted',
+        note: 'I hold an active AFC/QFA B license with 5 years leading U11/U12 developmental programs.',
+        appliedDate: 'Yesterday'
+      }
+    ]);
+    setShortlistedCoachIds(['coach-1', 'coach-2']);
+    setComparedCoachIds(['coach-1', 'coach-2']);
+    setSelectedCoachForView('coach-1');
+    setSessionSlots(INITIAL_SESSION_SLOTS);
+    setSessionRequests([
+      {
+        id: 'req-session-1',
+        coachId: 'coach-1',
+        slotId: 'slot-1',
+        slotDay: 'Tuesday',
+        slotTime: '16:30 – 17:30',
+        slotLocation: 'Pitch 2, Falcon Sports Grounds, Doha',
+        childFirstName: 'Sami',
+        childAge: 9,
+        childLevel: 'Intermediate',
+        goal: 'Improve 1v1 ball mastery and build game confidence.',
+        message: 'Looking for a structured, encouraging private coach to refine first touch and movement.',
+        parentName: 'Khalid Al-Nuaimi',
+        status: 'Pending',
+        createdAt: 'Today, 10:15 AM'
+      }
+    ]);
+    showToast('Demo data reset to initial state.');
+  };
+
   // Sync HTML body class for theme
   useEffect(() => {
     const root = document.documentElement;
@@ -537,6 +810,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   return (
     <AppContext.Provider
       value={{
+        portal,
+        setPortal,
+        mode,
+        setMode,
+        resetDemoData,
         theme,
         setTheme,
         toggleTheme,
@@ -550,13 +828,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         viewportMode,
         setViewportMode,
 
-        // Flow A
+        // Facility & Tender
         facilityBrief,
         updateFacilityBrief,
         isTenderSent,
         bidDeadlineDays,
         setBidDeadlineDays,
         sendTender,
+        tenderPackages,
+        bids,
+        selectedPackageForComparison,
+        setSelectedPackageForComparison,
+        simulateSupplierBids,
         suppliers,
         awardedSupplierId,
         awardSupplier,
@@ -566,7 +849,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         submitSupplierBid,
         declineSupplierRequest,
 
-        // Flow B
+        // Coaching & Vacancies
         coaches,
         updateCoachProfile,
         vacancies,
@@ -583,7 +866,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setSelectedCoachForView,
         requestInterview,
 
-        // Flow C
+        // Private Coaching & Booking
         parentSearch,
         setParentSearch,
         sessionSlots,

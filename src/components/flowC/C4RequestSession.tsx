@@ -62,11 +62,11 @@ export const C4RequestSession: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW C</span>
+            <span>ATHLETE & PARENT PORTAL</span>
             <span>/</span>
-            <span>PARENT PERSPECTIVE</span>
+            <span>FIND A COACH</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">C4 REQUEST A SESSION</span>
+            <span className="text-[var(--accent-text)]">C4 REQUEST SESSION</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             Schedule Private Session with {coach.name}

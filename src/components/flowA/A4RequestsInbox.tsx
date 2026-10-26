@@ -6,12 +6,17 @@ import { VerifiedBadge } from '../shared/VerifiedBadge.tsx';
 import { EmptyState } from '../shared/EmptyState.tsx';
 
 export const A4RequestsInbox: React.FC = () => {
-  const { supplierRequests, setFlowStep, suppliers } = useApp();
+  const { supplierRequests, setFlowStep, suppliers, setSelectedPackageForComparison } = useApp();
   const [tab, setTab] = useState<'New' | 'Bid sent' | 'Declined'>('New');
 
-  const mySupplierProfile = suppliers[0]; // Active supplier perspective (Al Rayyan Sports Infra)
+  const mySupplierProfile = suppliers[0]; // Northgate Sports Infrastructure (Sample)
 
   const filteredRequests = supplierRequests.filter((r) => r.status === tab);
+
+  const handleReviewRequest = (requestId: string) => {
+    setSelectedPackageForComparison(requestId);
+    setFlowStep('A5');
+  };
 
   return (
     <div className="space-y-6">
@@ -19,9 +24,9 @@ export const A4RequestsInbox: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW A</span>
+            <span>BUSINESS PORTAL</span>
             <span>/</span>
-            <span>SUPPLIER PORTAL</span>
+            <span>SUPPLIER REQUESTS</span>
             <span>/</span>
             <span className="text-[var(--accent-text)]">A4 REQUESTS INBOX</span>
           </div>
@@ -85,24 +90,37 @@ export const A4RequestsInbox: React.FC = () => {
                   key={req.id}
                   className="p-5 border border-[var(--border-color)] bg-[var(--panel-bg)] space-y-4 hover:border-[var(--border-hover)] transition-colors"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono-label text-[var(--muted-color)]">
-                          {req.category}
-                        </span>
-                        <span className="text-xs text-[var(--border-color)]">/</span>
-                        <span className="text-xs font-mono text-[var(--accent-text)]">
-                          TIER: {req.tier}
-                        </span>
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-16 h-16 border border-[var(--border-color)] overflow-hidden shrink-0 hidden sm:block relative">
+                        <img
+                          src={req.category.toLowerCase().includes('aquatic') || req.title.toLowerCase().includes('pool')
+                            ? 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=300&q=80'
+                            : req.category.toLowerCase().includes('arena') || req.title.toLowerCase().includes('hall')
+                            ? 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=300&q=80'
+                            : 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=300&q=80'}
+                          alt={req.title}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
-                      <h3 className="font-heading text-base text-[var(--heading-color)]">
-                        {req.title}
-                      </h3>
-                      <div className="text-xs text-[var(--muted-color)] flex items-center gap-2">
-                        <span>{req.facility}</span>
-                        <span>·</span>
-                        <span>{req.location}</span>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-mono-label text-[var(--muted-color)]">
+                            {req.category}
+                          </span>
+                          <span className="text-xs text-[var(--border-color)]">/</span>
+                          <span className="text-xs font-mono text-[var(--accent-text)]">
+                            TIER: {req.tier}
+                          </span>
+                        </div>
+                        <h3 className="font-heading text-base text-[var(--heading-color)] font-bold">
+                          {req.title}
+                        </h3>
+                        <div className="text-xs text-[var(--muted-color)] flex items-center gap-2">
+                          <span>{req.facility}</span>
+                          <span>·</span>
+                          <span>{req.location}</span>
+                        </div>
                       </div>
                     </div>
 
@@ -115,7 +133,7 @@ export const A4RequestsInbox: React.FC = () => {
                       TECHNICAL REQUIREMENTS OVERVIEW
                     </div>
                     <ul className="space-y-1 list-disc list-inside text-[var(--muted-color)]">
-                      {req.specs.slice(0, 2).map((s, i) => (
+                      {req.specs.slice(0, 3).map((s, i) => (
                         <li key={i}>{s}</li>
                       ))}
                     </ul>
@@ -141,7 +159,7 @@ export const A4RequestsInbox: React.FC = () => {
                     {req.status === 'New' && (
                       <button
                         type="button"
-                        onClick={() => setFlowStep('A5')}
+                        onClick={() => handleReviewRequest(req.id)}
                         className="btn-primary py-2 px-4 text-xs gap-1.5"
                       >
                         <span>REVIEW REQUEST & BID</span>
@@ -192,13 +210,13 @@ export const A4RequestsInbox: React.FC = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-[var(--muted-color)]">Accreditations</span>
-                <span className="font-mono text-emerald-500 font-bold">
-                  FIFA Licenced Installer
+                <span className="font-mono text-emerald-500 font-bold text-right text-[11px]">
+                  installer qualification, to be stated by the bidder
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[var(--muted-color)]">Active Tenders</span>
-                <span className="font-mono text-[var(--heading-color)]">1 active RFP</span>
+                <span className="font-mono text-[var(--heading-color)]">{supplierRequests.length} active packages</span>
               </div>
             </div>
 

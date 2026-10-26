@@ -36,11 +36,11 @@ export const C2Results: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW C</span>
+            <span>ATHLETE & PARENT PORTAL</span>
             <span>/</span>
-            <span>PARENT PERSPECTIVE</span>
+            <span>FIND A COACH</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">C2 SEARCH RESULTS</span>
+            <span className="text-[var(--accent-text)]">C2 RESULTS</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             Verified Coaches Available for {parentSearch.sport}
@@ -120,11 +120,22 @@ export const C2Results: React.FC = () => {
               {/* Top row */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-[var(--inset-bg)] border border-[var(--border-color)] flex items-center justify-center font-heading text-base font-bold text-[var(--accent-text)]">
-                    {coach.name.split(' ')[1]?.slice(0, 2).toUpperCase() || 'CO'}
+                  <div className="w-14 h-14 bg-[var(--inset-bg)] border border-[var(--border-color)] overflow-hidden shrink-0 relative">
+                    {coach.avatarUrl ? (
+                      <img
+                        src={coach.avatarUrl}
+                        alt={coach.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center font-heading text-base font-bold text-[var(--accent-text)]">
+                        {coach.name.split(' ')[1]?.slice(0, 2).toUpperCase() || 'CO'}
+                      </div>
+                    )}
                   </div>
                   <div>
-                    <h3 className="font-heading text-base text-[var(--heading-color)]">
+                    <h3 className="font-heading text-base text-[var(--heading-color)] font-bold">
                       {coach.name}
                     </h3>
                     <div className="text-xs text-[var(--muted-color)]">

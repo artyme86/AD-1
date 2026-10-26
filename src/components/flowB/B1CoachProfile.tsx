@@ -29,11 +29,11 @@ export const B1CoachProfile: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW B</span>
+            <span>INDIVIDUAL PORTAL</span>
             <span>/</span>
-            <span>COACH PERSPECTIVE</span>
+            <span>COACH PROFILE</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">B1 COACH PROFILE</span>
+            <span className="text-[var(--accent-text)]">B1 PROFILE</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             Verified Coach Professional Profile
@@ -63,7 +63,7 @@ export const B1CoachProfile: React.FC = () => {
             <span className="font-mono font-bold text-emerald-500">{coach.profileCompleteness}%</span>
           </div>
           <span className="text-[11px] text-[var(--muted-color)]">
-            Federation check: Verified by Qatar Football Association
+            Registry check: Verified by Qatar Football Association
           </span>
         </div>
         <div className="w-full h-2 bg-[var(--inset-bg)] border border-[var(--border-color)]">
@@ -79,17 +79,27 @@ export const B1CoachProfile: React.FC = () => {
         {/* Left Column: Photo Placeholder, Bio & Identity (4 cols) */}
         <div className="lg:col-span-4 space-y-4">
           <div className="p-5 border border-[var(--border-color)] bg-[var(--panel-bg)] space-y-4">
-            {/* Photo Placeholder */}
-            <div className="aspect-square bg-[var(--inset-bg)] border border-[var(--border-color)] flex flex-col items-center justify-center p-6 text-center space-y-2 relative">
-              <div className="w-20 h-20 bg-[var(--panel-bg)] border border-[var(--border-color)] flex items-center justify-center font-heading text-2xl font-bold text-[var(--accent-text)]">
-                TM
-              </div>
-              <div>
-                <span className="text-xs font-mono text-[var(--muted-color)] block">PHOTO VERIFIED</span>
-                <span className="text-[10px] text-[var(--muted-color)]">Biometric ID Match</span>
-              </div>
-              <div className="absolute top-3 right-3">
+            {/* Photo Verified Card */}
+            <div className="relative aspect-square bg-[var(--inset-bg)] border border-[var(--border-color)] overflow-hidden group">
+              {coach.avatarUrl ? (
+                <img
+                  src={coach.avatarUrl}
+                  alt={coach.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center space-y-2">
+                  <div className="w-20 h-20 bg-[var(--panel-bg)] border border-[var(--border-color)] flex items-center justify-center font-heading text-2xl font-bold text-[var(--accent-text)]">
+                    TM
+                  </div>
+                </div>
+              )}
+              <div className="absolute top-3 right-3 z-10">
                 <VerifiedBadge name={coach.name} details={coach.verificationDetails} />
+              </div>
+              <div className="absolute bottom-0 inset-x-0 p-2.5 bg-black/75 backdrop-blur-xs border-t border-[var(--border-color)] flex items-center justify-between text-[10px] font-mono">
+                <span className="text-emerald-400 font-bold">✓ BIOMETRIC ID VERIFIED</span>
+                <span className="text-white/70">QFA AUDITED</span>
               </div>
             </div>
 
@@ -232,7 +242,7 @@ export const B1CoachProfile: React.FC = () => {
                 Accredited Coaching Licenses & Safeguarding Credentials
               </h3>
               <span className="text-[10px] font-mono text-[var(--muted-color)]">
-                Federation Registry Verified
+                Accredited Registry Verified
               </span>
             </div>
 

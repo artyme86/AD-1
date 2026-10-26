@@ -23,11 +23,11 @@ export const B7MyApplications: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW B</span>
+            <span>INDIVIDUAL PORTAL</span>
             <span>/</span>
-            <span>COACH PERSPECTIVE</span>
+            <span>MY APPLICATIONS</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">B7 MY APPLICATIONS</span>
+            <span className="text-[var(--accent-text)]">B7 APPLICATIONS</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             Active Club Coaching Applications

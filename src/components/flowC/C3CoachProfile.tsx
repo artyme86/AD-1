@@ -22,11 +22,11 @@ export const C3CoachProfile: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW C</span>
+            <span>ATHLETE & PARENT PORTAL</span>
             <span>/</span>
-            <span>PARENT PERSPECTIVE</span>
+            <span>FIND A COACH</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">C3 COACH PROFILE</span>
+            <span className="text-[var(--accent-text)]">C3 PROFILE</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             {coach.name}
@@ -64,13 +64,25 @@ export const C3CoachProfile: React.FC = () => {
         {/* Left Column: Identity, Rates & Formats (4 cols) */}
         <div className="lg:col-span-4 space-y-4">
           <div className="p-5 border border-[var(--border-color)] bg-[var(--panel-bg)] space-y-4">
-            <div className="aspect-square bg-[var(--inset-bg)] border border-[var(--border-color)] flex flex-col items-center justify-center p-6 text-center space-y-2">
-              <div className="w-20 h-20 bg-[var(--panel-bg)] border border-[var(--border-color)] flex items-center justify-center font-heading text-2xl font-bold text-[var(--accent-text)]">
-                {coach.name.split(' ')[1]?.slice(0, 2).toUpperCase() || 'CO'}
+            <div className="relative aspect-square bg-[var(--inset-bg)] border border-[var(--border-color)] overflow-hidden">
+              {coach.avatarUrl ? (
+                <img
+                  src={coach.avatarUrl}
+                  alt={coach.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center space-y-2">
+                  <div className="w-20 h-20 bg-[var(--panel-bg)] border border-[var(--border-color)] flex items-center justify-center font-heading text-2xl font-bold text-[var(--accent-text)]">
+                    {coach.name.split(' ')[1]?.slice(0, 2).toUpperCase() || 'CO'}
+                  </div>
+                </div>
+              )}
+              <div className="absolute bottom-0 inset-x-0 p-2 bg-black/75 backdrop-blur-xs border-t border-[var(--border-color)] text-center">
+                <span className="text-[10px] font-mono text-emerald-400 font-bold tracking-wider">
+                  ✓ BIOMETRIC & POLICE AUDIT VERIFIED
+                </span>
               </div>
-              <span className="text-xs font-mono text-emerald-500 font-bold">
-                ✓ BACKGROUND AUDIT ACTIVE
-              </span>
             </div>
 
             <div className="space-y-1">

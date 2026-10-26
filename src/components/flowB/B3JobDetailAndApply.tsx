@@ -22,7 +22,7 @@ export const B3JobDetailAndApply: React.FC = () => {
   );
 
   const [applicationNote, setApplicationNote] = useState(
-    'I hold an active AFC/QFA "B" license and have spent the last 5 years coaching ages 8-12 at Al Duhail SC youth academy. I would welcome the opportunity to discuss this post.'
+    'I hold an active AFC/QFA "B" license (as recognised by the hiring club) and have spent the last 5 years coaching ages 8-12 at Falcon Rovers Youth Academy (Sample). I would welcome the opportunity to discuss this post.'
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,11 +42,11 @@ export const B3JobDetailAndApply: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW B</span>
+            <span>INDIVIDUAL PORTAL</span>
             <span>/</span>
-            <span>COACH PERSPECTIVE</span>
+            <span>OPPORTUNITIES</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">B3 JOB DETAIL & APPLICATION</span>
+            <span className="text-[var(--accent-text)]">B3 JOB DETAIL & APPLY</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             {activeVacancy.title}
@@ -105,7 +105,7 @@ export const B3JobDetailAndApply: React.FC = () => {
           <div className="p-5 border border-[var(--border-color)] bg-[var(--panel-bg)] space-y-3">
             <h3 className="font-heading text-sm text-[var(--heading-color)] flex items-center gap-2">
               <Award className="w-4 h-4 text-emerald-500" />
-              Mandatory Federation Qualifications & Experience
+              Mandatory Coaching Qualifications & Experience (as recognised by the hiring club)
             </h3>
             <ul className="text-xs text-[var(--muted-color)] space-y-2 list-disc list-inside leading-relaxed">
               {activeVacancy.requirements.map((req, i) => (

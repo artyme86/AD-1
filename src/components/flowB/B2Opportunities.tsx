@@ -29,17 +29,17 @@ export const B2Opportunities: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW B</span>
+            <span>INDIVIDUAL PORTAL</span>
             <span>/</span>
-            <span>COACH PERSPECTIVE</span>
+            <span>OPPORTUNITIES</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">B2 VACANCY OPPORTUNITIES</span>
+            <span className="text-[var(--accent-text)]">B2 VACANCIES</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             Accredited Club Coaching Vacancies
           </h1>
           <p className="text-sm text-[var(--muted-color)] mt-0.5">
-            Verified opportunities from sports federations and youth football development academies.
+            Verified opportunities from accredited clubs and youth football development academies.
           </p>
         </div>
 
@@ -156,25 +156,38 @@ export const B2Opportunities: React.FC = () => {
                 onClick={() => handleSelectJob(vac.id)}
                 className="p-5 border border-[var(--border-color)] bg-[var(--panel-bg)] hover:border-[var(--border-hover)] transition-colors cursor-pointer space-y-4"
               >
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs font-bold text-[var(--accent-text)]">
-                        {vac.club}
-                      </span>
-                      <span className="text-[var(--border-color)]">·</span>
-                      <span className="text-[11px] font-mono text-[var(--muted-color)]">
-                        {vac.location}
-                      </span>
-                      <span className="text-[var(--border-color)]">·</span>
-                      <span className="text-[11px] font-mono text-[var(--muted-color)]">
-                        Published {vac.publishedDate}
-                      </span>
-                    </div>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    {vac.bannerUrl && (
+                      <div className="w-24 h-20 border border-[var(--border-color)] overflow-hidden shrink-0 hidden sm:block relative">
+                        <img
+                          src={vac.bannerUrl}
+                          alt={vac.club}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-black/10" />
+                      </div>
+                    )}
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs font-bold text-[var(--accent-text)]">
+                          {vac.club}
+                        </span>
+                        <span className="text-[var(--border-color)]">·</span>
+                        <span className="text-[11px] font-mono text-[var(--muted-color)]">
+                          {vac.location}
+                        </span>
+                        <span className="text-[var(--border-color)]">·</span>
+                        <span className="text-[11px] font-mono text-[var(--muted-color)]">
+                          Published {vac.publishedDate}
+                        </span>
+                      </div>
 
-                    <h3 className="font-heading text-lg text-[var(--heading-color)]">
-                      {vac.title}
-                    </h3>
+                      <h3 className="font-heading text-lg text-[var(--heading-color)] font-bold">
+                        {vac.title}
+                      </h3>
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">

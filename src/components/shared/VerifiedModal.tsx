@@ -32,7 +32,7 @@ export const VerifiedModal: React.FC = () => {
               Verification Dossier: {title}
             </h2>
             <p className="text-xs text-[var(--muted-color)]">
-              All credentials are independently cross-referenced with national sporting federations and statutory records.
+              All credentials are independently cross-referenced with national sports governing bodies and statutory records.
             </p>
           </div>
           <button

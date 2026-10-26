@@ -11,7 +11,7 @@ export const C1FindCoach: React.FC = () => {
     'Doha Central, Qatar',
     'The Pearl & West Bay',
     'Lusail Marina',
-    'Aspire Zone & Al Rayyan'
+    'Aspire Zone & West District'
   ];
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
   const formats = ['In person', 'Online / Hybrid'];
@@ -28,11 +28,11 @@ export const C1FindCoach: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW C</span>
+            <span>ATHLETE & PARENT PORTAL</span>
             <span>/</span>
-            <span>PARENT PERSPECTIVE</span>
+            <span>FIND A COACH</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">C1 FIND A COACH</span>
+            <span className="text-[var(--accent-text)]">C1 SEARCH</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             Verified Private Coach Finder
@@ -78,19 +78,40 @@ export const C1FindCoach: React.FC = () => {
               <Activity className="w-3.5 h-3.5 text-[var(--accent-red)]" />
               01. SELECT SPORT *
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {sports.map((sport) => (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { name: 'Football', img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Swimming', img: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Tennis', img: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=300&q=80' },
+                { name: 'Athletics', img: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=300&q=80' }
+              ].map(({ name, img }) => (
                 <button
-                  key={sport}
+                  key={name}
                   type="button"
-                  onClick={() => setParentSearch((prev) => ({ ...prev, sport }))}
-                  className={`btn-action text-xs justify-center py-2.5 ${
-                    parentSearch.sport === sport
-                      ? 'border-[var(--accent-red)] text-[var(--heading-color)] bg-[var(--inset-bg)] font-bold'
-                      : 'text-[var(--text-primary)]'
+                  onClick={() => setParentSearch((prev) => ({ ...prev, sport: name }))}
+                  className={`border flex flex-col items-center justify-between overflow-hidden text-xs transition-colors cursor-pointer text-left ${
+                    parentSearch.sport === name
+                      ? 'border-[var(--accent-red)] bg-[var(--inset-bg)] ring-1 ring-[var(--accent-red)]'
+                      : 'border-[var(--border-color)] bg-[var(--panel-bg)] hover:border-[var(--border-hover)]'
                   }`}
                 >
-                  {sport}
+                  <div className="h-16 w-full overflow-hidden relative">
+                    <img
+                      src={img}
+                      alt={name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/20" />
+                  </div>
+                  <div className="p-2 w-full text-center">
+                    <span className={`font-mono text-xs ${
+                      parentSearch.sport === name
+                        ? 'font-bold text-[var(--heading-color)]'
+                        : 'text-[var(--text-primary)]'
+                    }`}>
+                      {name}
+                    </span>
+                  </div>
                 </button>
               ))}
             </div>

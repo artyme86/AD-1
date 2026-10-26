@@ -16,10 +16,10 @@ export const B4PostVacancy: React.FC = () => {
     minLicense: "AFC/UEFA 'B' License",
     minExperienceYears: 3,
     languages: 'Arabic, English',
-    club: 'Al Rayyan SC Youth Section (Sample)',
+    club: 'Northgate SC Youth Section (Sample)',
     salarySample: 'QAR 24,000 - 30,000 / month (Sample)',
     requirements: [
-      "AFC/UEFA 'B' or federation-recognized equivalent",
+      "AFC/UEFA 'B' or governing-body-recognised equivalent, as recognised by the hiring club",
       'Pediatric CPR and child safeguarding clearance',
       'Demonstrated 3+ years managing youth match squads'
     ],
@@ -27,7 +27,7 @@ export const B4PostVacancy: React.FC = () => {
       'Design periodized technical microcycles for developmental age squads',
       'Oversee weekly league competitions and match analysis'
     ],
-    benefits: 'Full club coaching kit, accommodation allowance, private healthcare and federation education sponsorship.'
+    benefits: 'Full club coaching kit, accommodation allowance, private healthcare and coaching education sponsorship.'
   });
 
   const [isPublishing, setIsPublishing] = useState(false);
@@ -63,9 +63,9 @@ export const B4PostVacancy: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW B</span>
+            <span>BUSINESS PORTAL</span>
             <span>/</span>
-            <span>CLUB CLIENT PERSPECTIVE</span>
+            <span>HIRE A COACH</span>
             <span>/</span>
             <span className="text-[var(--accent-text)]">B4 POST VACANCY</span>
           </div>
@@ -73,7 +73,7 @@ export const B4PostVacancy: React.FC = () => {
             Publish Academy Coaching Vacancy
           </h1>
           <p className="text-sm text-[var(--muted-color)] mt-0.5">
-            Define mandatory federation standards, age bracket, and compensation to match verified coaches in the registry.
+            Define mandatory coaching standards, age bracket, and compensation to match verified coaches in the registry.
           </p>
         </div>
 

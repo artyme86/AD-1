@@ -8,17 +8,36 @@ export const A5RequestAndBid: React.FC = () => {
     supplierRequests,
     submitSupplierBid,
     declineSupplierRequest,
-    setFlowStep
+    setFlowStep,
+    selectedPackageForComparison
   } = useApp();
 
-  const activeRequest = supplierRequests[0];
+  const activeRequest =
+    supplierRequests.find((r) => r.id === selectedPackageForComparison) ||
+    supplierRequests[0] || {
+      id: 'pkg-turf',
+      title: 'Premium artificial turf pitch package',
+      category: 'Sports Surfaces & Civil Works',
+      facility: 'Club Facility (Sample)',
+      location: 'Doha, Qatar',
+      tier: 'Premium',
+      deadlineDays: 14,
+      status: 'New',
+      specs: [
+        'UV-stabilised polyethylene monofilament 50mm pile height',
+        'heat-limiting infill designed to reduce surface heat; supplier to document performance',
+        'Shock pad elastic layer with laser-levelled sub-base',
+        'relevant international quality certification, to be stated by the bidder',
+        'UV warranty period to be stated by the bidder'
+      ]
+    };
 
   const [formData, setFormData] = useState({
     priceQar: '840000',
-    product: 'FIFA Pro Turf DX-50 (Monofilament + TPE Organic Infill)',
+    product: 'Pro Turf (Sample)',
     deliveryWeeks: '6',
     warrantyYears: '8',
-    notes: 'Proposal includes laser sub-base calibration, shock pad underlayment, and organic heat-limiting infill engineered for Doha extreme ambient temperatures.'
+    notes: 'Proposal includes laser sub-base calibration, shock pad underlayment, and heat-limiting infill designed to reduce surface heat; supplier to document performance.'
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +56,7 @@ export const A5RequestAndBid: React.FC = () => {
       });
       setIsSubmitting(false);
       setSubmittedSuccess(true);
-    }, 600);
+    }, 500);
   };
 
   const handleDecline = () => {
@@ -51,9 +70,9 @@ export const A5RequestAndBid: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW A</span>
+            <span>BUSINESS PORTAL</span>
             <span>/</span>
-            <span>SUPPLIER PORTAL</span>
+            <span>SUPPLIER REQUESTS</span>
             <span>/</span>
             <span className="text-[var(--accent-text)]">A5 REQUEST & BID SUBMISSION</span>
           </div>
@@ -61,7 +80,7 @@ export const A5RequestAndBid: React.FC = () => {
             Tender Specification & Bid Proposal
           </h1>
           <p className="text-sm text-[var(--muted-color)] mt-0.5">
-            Review detailed technical requirements and formulate an official, binding commercial tender bid.
+            Review detailed technical requirements and formulate an official commercial tender bid.
           </p>
         </div>
 
@@ -79,7 +98,7 @@ export const A5RequestAndBid: React.FC = () => {
             Bid Successfully Transmitted
           </h2>
           <p className="text-xs text-[var(--muted-color)] leading-relaxed">
-            Your quotation of <strong className="text-[var(--text-primary)] font-mono">QAR {Number(formData.priceQar).toLocaleString()} (Sample)</strong> has been logged into the procurement registry. The evaluation committee will review your submission in stage A6.
+            Your quotation of <strong className="text-[var(--text-primary)] font-mono">QAR {Number(formData.priceQar).toLocaleString()} (Sample)</strong> has been submitted. The client's comparison screen in stage A6 now lists this live bid.
           </p>
           <div className="pt-2 flex justify-center gap-3">
             <button
@@ -116,11 +135,13 @@ export const A5RequestAndBid: React.FC = () => {
               <div className="space-y-3 text-xs">
                 <div className="flex justify-between py-1 border-b border-[var(--border-color)]">
                   <span className="text-[var(--muted-color)]">Quality Standard</span>
-                  <span className="font-mono text-emerald-500 font-bold">FIFA Quality Pro</span>
+                  <span className="font-mono text-emerald-500 font-bold text-right text-[11px]">
+                    relevant international quality certification, to be stated by the bidder
+                  </span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-[var(--border-color)]">
                   <span className="text-[var(--muted-color)]">Target Climate</span>
-                  <span className="font-mono text-[var(--heading-color)]">Doha extreme summer (&gt;48°C)</span>
+                  <span className="font-mono text-[var(--heading-color)]">Doha summer conditions</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-[var(--border-color)]">
                   <span className="text-[var(--muted-color)]">Bid Deadline</span>
@@ -184,7 +205,7 @@ export const A5RequestAndBid: React.FC = () => {
                   />
                 </div>
                 <span className="block text-[10px] text-[var(--muted-color)] mt-1 font-mono">
-                  Sample figure. Inclusive of customs, transport, laser grading & infill compaction.
+                  Sample figure. Inclusive of delivery, laser grading & infill compaction.
                 </span>
               </div>
 

@@ -41,11 +41,11 @@ export const C6CoachSchedule: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW C</span>
+            <span>INDIVIDUAL PORTAL</span>
             <span>/</span>
-            <span>COACH PERSPECTIVE</span>
+            <span>SESSION REQUESTS</span>
             <span>/</span>
-            <span className="text-[var(--accent-text)]">C6 PRIVATE SESSIONS & SCHEDULE</span>
+            <span className="text-[var(--accent-text)]">C6 SCHEDULE</span>
           </div>
           <h1 className="text-2xl font-heading text-[var(--heading-color)]">
             Private Session Inquiries & Calendar Dispatch

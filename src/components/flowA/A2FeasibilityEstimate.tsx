@@ -1,80 +1,96 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, ShieldCheck, ThermometerSun, Zap, Wind, Users, FileSpreadsheet, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, ThermometerSun, Zap, Wind, Users, FileSpreadsheet, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useApp } from '../../context/AppContext.tsx';
 import { StatusChip } from '../shared/StatusChip.tsx';
+import { ILLUSTRATIVE_RATES, FACILITY_ASSETS } from '../../data/sampleData.ts';
 
 export const A2FeasibilityEstimate: React.FC = () => {
   const { facilityBrief, setFlowStep } = useApp();
   const [activeTab, setActiveTab] = useState<'build' | 'staffing' | 'specs'>('build');
 
   // Multiplier based on tier
-  const tierMultiplier = facilityBrief.qualityTier === 'Elite' ? 1.35 : facilityBrief.qualityTier === 'Premium' ? 1.15 : 1.0;
+  const tierMultiplier =
+    facilityBrief.qualityTier === 'Elite'
+      ? 1.35
+      : facilityBrief.qualityTier === 'Premium'
+      ? 1.15
+      : 1.0;
 
-  // Build Cost Lines
-  const buildCostItems = [
-    {
+  // Build Cost Lines derived strictly from brief and ILLUSTRATIVE_RATES
+  const buildCostItems: {
+    category: string;
+    item: string;
+    qty: string;
+    lowQar: number;
+    highQar: number;
+    heatMitigation: string;
+  }[] = [];
+
+  if (facilityBrief.pitches5aSide > 0) {
+    buildCostItems.push({
       category: 'Surfacing & Civil Works',
-      item: 'FIFA Quality Pro Artificial Turf Pitch (50mm + Shock Pad + Organic Infill)',
+      item: '5-a-side pitch and equipment package (turf, floodlighting, nets, seating)',
       qty: `${facilityBrief.pitches5aSide} pitch`,
-      lowQar: Math.round(780000 * facilityBrief.pitches5aSide * tierMultiplier),
-      highQar: Math.round(920000 * facilityBrief.pitches5aSide * tierMultiplier),
-      heatMitigation: 'Heat-limiting infill reduces surface temperature by up to 15°C'
-    },
-    {
+      lowQar: Math.round(ILLUSTRATIVE_RATES.pitch5aSide.lowQar * facilityBrief.pitches5aSide * tierMultiplier),
+      highQar: Math.round(ILLUSTRATIVE_RATES.pitch5aSide.highQar * facilityBrief.pitches5aSide * tierMultiplier),
+      heatMitigation: 'heat-limiting infill designed to reduce surface heat; supplier to document performance'
+    });
+  }
+
+  if (facilityBrief.olympicPools > 0) {
+    buildCostItems.push({
       category: 'Aquatics Engineering',
-      item: 'Olympic Pool (50m, 10-Lane) with High-Capacity Active Chilling System',
+      item: 'Olympic pool (50m, 10-Lane) with active chilling system',
       qty: `${facilityBrief.olympicPools} pool`,
-      lowQar: Math.round(3800000 * facilityBrief.olympicPools * tierMultiplier),
-      highQar: Math.round(4600000 * facilityBrief.olympicPools * tierMultiplier),
-      heatMitigation: 'Industrial heat-exchange chillers maintain FINA 25°C-28°C standards'
-    },
-    {
+      lowQar: Math.round(ILLUSTRATIVE_RATES.olympicPool.lowQar * facilityBrief.olympicPools * tierMultiplier),
+      highQar: Math.round(ILLUSTRATIVE_RATES.olympicPool.highQar * facilityBrief.olympicPools * tierMultiplier),
+      heatMitigation: 'active chillers maintain water temperature; to be confirmed against the current World Aquatics facility requirements'
+    });
+  }
+
+  if (facilityBrief.smallerPools > 0) {
+    buildCostItems.push({
       category: 'Aquatics Engineering',
-      item: 'Youth 25m Training Pool Filtration & UV Water Treatment',
+      item: 'Youth 25m training pool filtration & water treatment package',
       qty: `${facilityBrief.smallerPools} pool`,
-      lowQar: Math.round(1400000 * facilityBrief.smallerPools * tierMultiplier),
-      highQar: Math.round(1800000 * facilityBrief.smallerPools * tierMultiplier),
-      heatMitigation: 'Automated salinity balancing and rapid turnover filtration'
-    },
-    {
-      category: 'Lighting Systems',
-      item: 'High-Mast LED Floodlighting (750 Lux, Anti-Glare Optics, IP66 Dust/Moisture Rated)',
-      qty: 'Turnkey',
-      lowQar: Math.round(340000 * tierMultiplier),
-      highQar: Math.round(480000 * tierMultiplier),
-      heatMitigation: 'Passive heat sinks rated for continuous operation at 55°C ambient'
-    },
-    {
-      category: 'Perimeter & Ball Catch',
-      item: 'Heavy-Duty UV-Treated Polypropylene Perimeter Netting (6m Height, High Wind-Load)',
-      qty: 'Perimeter',
-      lowQar: Math.round(110000 * tierMultiplier),
-      highQar: Math.round(160000 * tierMultiplier),
-      heatMitigation: 'UV grade 8 protection resists thermal embrittlement and sun degradation'
-    },
-    {
-      category: 'Spectator Amenities',
-      item: 'Modular Grandstand Seating (500 Seats) with Cantilever Tensile Shade Fabric',
-      qty: '500 seats',
-      lowQar: Math.round(290000 * tierMultiplier),
-      highQar: Math.round(380000 * tierMultiplier),
-      heatMitigation: 'UV-inhibited polyolefin copolymer seats with 95% UV blockage canopy'
-    }
-  ];
+      lowQar: Math.round(ILLUSTRATIVE_RATES.smallerPool.lowQar * facilityBrief.smallerPools * tierMultiplier),
+      highQar: Math.round(ILLUSTRATIVE_RATES.smallerPool.highQar * facilityBrief.smallerPools * tierMultiplier),
+      heatMitigation: 'automated circulation balancing and rapid turnover filtration'
+    });
+  }
+
+  // Contracting and Project Management line
+  buildCostItems.push({
+    category: 'Project Management & Engineering',
+    item: 'Contracting, engineering supervision, laser grading and project management',
+    qty: 'Turnkey site package',
+    lowQar: Math.round(ILLUSTRATIVE_RATES.contractingAndPM.lowQar * tierMultiplier),
+    highQar: Math.round(ILLUSTRATIVE_RATES.contractingAndPM.highQar * tierMultiplier),
+    heatMitigation: 'site QA supervision and geotechnical compliance'
+  });
 
   const totalBuildLow = buildCostItems.reduce((acc, curr) => acc + curr.lowQar, 0);
   const totalBuildHigh = buildCostItems.reduce((acc, curr) => acc + curr.highQar, 0);
 
-  // Staffing Plan Lines
+  // Staffing Plan Lines: annual = monthly * count * 12
   const staffingItems = [
-    { role: 'Facility Operations Director', count: 1, monthlyQar: 32000, annualTotalQar: 384000, req: '10+ yrs sports venue leadership' },
-    { role: 'Head Sports Turf & Grounds Specialist', count: 1, monthlyQar: 18000, annualTotalQar: 216000, req: 'FIFA synthetic certification' },
-    { role: 'Senior Aquatics Plant & HVAC Engineer', count: 2, monthlyQar: 16000, annualTotalQar: 384000, req: 'Pool chilling & filtration specialist' },
-    { role: 'Certified Lifeguards (Dual Shift)', count: 4, monthlyQar: 7500, annualTotalQar: 360000, req: 'RLSS / Qatar Red Crescent certified' },
-    { role: 'Duty Operations Supervisors', count: 2, monthlyQar: 9000, annualTotalQar: 216000, req: 'Facility access & safeguarding' }
-  ];
+    { role: 'Facility Operations Director', count: 1, monthlyQar: 32000, req: '10+ yrs sports venue leadership' },
+    { role: 'Head Sports Grounds Specialist', count: 1, monthlyQar: 18000, req: 'Synthetic turf installer qualification, to be stated by the bidder' },
+    { role: 'Senior Aquatics Plant & HVAC Engineer', count: 2, monthlyQar: 16000, req: 'Pool chilling & filtration specialist' },
+    { role: 'Certified Lifeguards (Dual Shift)', count: 4, monthlyQar: 7500, req: 'Accredited lifeguard & CPR certified' },
+    { role: 'Duty Operations Supervisors', count: 2, monthlyQar: 9000, req: 'Facility access & safeguarding' }
+  ].map((item) => ({
+    ...item,
+    annualTotalQar: item.monthlyQar * item.count * 12
+  }));
 
   const totalStaffingAnnual = staffingItems.reduce((acc, curr) => acc + curr.annualTotalQar, 0);
+
+  const totalFacilities =
+    facilityBrief.pitches5aSide +
+    facilityBrief.olympicPools +
+    facilityBrief.smallerPools +
+    facilityBrief.indoorHalls;
 
   return (
     <div className="space-y-6">
@@ -82,9 +98,9 @@ export const A2FeasibilityEstimate: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono-label text-[var(--muted-color)] mb-1">
-            <span>FLOW A</span>
+            <span>BUSINESS PORTAL</span>
             <span>/</span>
-            <span>B2B FACILITY PLANNING</span>
+            <span>PLAN A FACILITY</span>
             <span>/</span>
             <span className="text-[var(--accent-text)]">A2 FEASIBILITY ESTIMATE</span>
           </div>
@@ -92,7 +108,7 @@ export const A2FeasibilityEstimate: React.FC = () => {
             Feasibility Estimate & Technical Specifications
           </h1>
           <p className="text-sm text-[var(--muted-color)] mt-0.5">
-            Engineered cost modeling calibrated for Doha climatic parameters and federation quality benchmarks.
+            Engineered cost modeling calibrated for Doha climatic parameters and governing body quality benchmarks.
           </p>
         </div>
 
@@ -102,7 +118,7 @@ export const A2FeasibilityEstimate: React.FC = () => {
         </div>
       </div>
 
-      {/* High-Level Financial KPI Bar */}
+      {/* High-Level Budget KPI Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-4 border border-[var(--border-color)] bg-[var(--panel-bg)] space-y-1">
           <span className="text-[10px] font-mono-label text-[var(--muted-color)]">INDICATIVE BUILD CAPEX RANGE</span>
@@ -123,9 +139,99 @@ export const A2FeasibilityEstimate: React.FC = () => {
         <div className="p-4 border border-[var(--border-color)] bg-[var(--panel-bg)] space-y-1">
           <span className="text-[10px] font-mono-label text-[var(--muted-color)]">SELECTED TIER & ENVIRONMENT</span>
           <div className="text-xl sm:text-2xl font-mono font-bold text-[var(--accent-text)]">
-            {facilityBrief.qualityTier.toUpperCase()} · DOHA HEAT
+            {facilityBrief.qualityTier.toUpperCase()} · DOHA SUMMER CONDITIONS
           </div>
           <span className="text-[11px] text-[var(--muted-color)] block">UV-stabilised + Active pool chilling protocols active</span>
+        </div>
+      </div>
+
+      {/* Selected Infrastructure Gallery */}
+      <div className="border border-[var(--border-color)] bg-[var(--panel-bg)] p-4 space-y-3">
+        <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-2">
+          <span className="text-[10px] font-mono-label text-[var(--muted-color)]">
+            SELECTED FACILITY ARCHITECTURE & PHYSICAL SPECIFICATIONS
+          </span>
+          <span className="text-xs font-mono text-emerald-500 font-bold">
+            {totalFacilities} Package Components Active
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {facilityBrief.pitches5aSide > 0 && (
+            <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
+              <div className="h-28 w-full overflow-hidden relative">
+                <img
+                  src={FACILITY_ASSETS.pitches5aSide.imageUrl}
+                  alt="Pitch"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+                  {facilityBrief.pitches5aSide}x 5-A-SIDE
+                </span>
+              </div>
+              <div className="p-2.5">
+                <div className="text-xs font-bold text-[var(--heading-color)]">FIFA Quality Pro Turf</div>
+                <div className="text-[10px] text-[var(--muted-color)] mt-0.5">50mm UV Monofilament + Shockpad</div>
+              </div>
+            </div>
+          )}
+
+          {facilityBrief.olympicPools > 0 && (
+            <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
+              <div className="h-28 w-full overflow-hidden relative">
+                <img
+                  src={FACILITY_ASSETS.olympicPools.imageUrl}
+                  alt="Olympic Pool"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+                  {facilityBrief.olympicPools}x OLYMPIC 50M
+                </span>
+              </div>
+              <div className="p-2.5">
+                <div className="text-xs font-bold text-[var(--heading-color)]">World Aquatics Tank</div>
+                <div className="text-[10px] text-[var(--muted-color)] mt-0.5">10 Lanes · Chilled Filtration</div>
+              </div>
+            </div>
+          )}
+
+          {facilityBrief.smallerPools > 0 && (
+            <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
+              <div className="h-28 w-full overflow-hidden relative">
+                <img
+                  src={FACILITY_ASSETS.smallerPools.imageUrl}
+                  alt="Training Pool"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+                  {facilityBrief.smallerPools}x TRAINING 25M
+                </span>
+              </div>
+              <div className="p-2.5">
+                <div className="text-xs font-bold text-[var(--heading-color)]">Warm-up & Youth Tank</div>
+                <div className="text-[10px] text-[var(--muted-color)] mt-0.5">5 Lanes · 28°C Constant Temp</div>
+              </div>
+            </div>
+          )}
+
+          {facilityBrief.indoorHalls > 0 && (
+            <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
+              <div className="h-28 w-full overflow-hidden relative">
+                <img
+                  src={FACILITY_ASSETS.indoorHalls.imageUrl}
+                  alt="Indoor Hall"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+                  {facilityBrief.indoorHalls}x ARENA
+                </span>
+              </div>
+              <div className="p-2.5">
+                <div className="text-xs font-bold text-[var(--heading-color)]">Sprung Timber Arena</div>
+                <div className="text-[10px] text-[var(--muted-color)] mt-0.5">Multi-Court FIBA / BWF Floor</div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -232,8 +338,8 @@ export const A2FeasibilityEstimate: React.FC = () => {
               <ul className="text-xs text-[var(--muted-color)] space-y-1 list-disc list-inside">
                 <li>Civil laser grading assumes standard geotechnical load-bearing capacity without deep piling.</li>
                 <li>Grid power connection: 415V 3-phase connection assumed within 200m of plot boundary.</li>
-                <li>Importation tariffs and clearance via Hamad Port accounted under Standard GCC customs rules.</li>
-                <li>Execution schedule: 16–22 weeks from tender award to federation sign-off.</li>
+                <li>Importation tariffs and clearance via Doha Commercial Port accounted under Standard GCC customs rules.</li>
+                <li>Execution schedule: 16–22 weeks from tender award to governing body sign-off.</li>
               </ul>
             </div>
           </div>
@@ -295,7 +401,7 @@ export const A2FeasibilityEstimate: React.FC = () => {
                 <span>STATE OF QATAR CLIMATIC DURABILITY CODES</span>
               </div>
               <p className="text-xs text-[var(--muted-color)] leading-relaxed">
-                Outdoor sporting infrastructure in Doha requires specialized polymers, heat-limiting infill, and active water chilling to endure summer surface temperatures exceeding 60°C and relentless ultraviolet exposure.
+                Outdoor sporting infrastructure in Doha requires specialized polymers, heat-limiting infill, and active water chilling suited to Doha summer conditions.
               </p>
             </div>
 
@@ -307,11 +413,11 @@ export const A2FeasibilityEstimate: React.FC = () => {
                     <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                     Artificial Turf & Infill
                   </h4>
-                  <StatusChip status="FIFA Pro" size="sm" />
+                  <StatusChip status="Certified Spec" size="sm" />
                 </div>
                 <ul className="text-xs text-[var(--muted-color)] space-y-1.5">
-                  <li>• <strong className="text-[var(--text-primary)]">Polymer:</strong> UV-stabilised virgin polyethylene monofilament (8,000+ hours UV accelerated test).</li>
-                  <li>• <strong className="text-[var(--text-primary)]">Infill:</strong> Coated organic/TPE heat-limiting infill engineered to lower surface temperatures by 12–15°C compared to standard SBR rubber crumb.</li>
+                  <li>• <strong className="text-[var(--text-primary)]">Polymer:</strong> UV-stabilised virgin polyethylene monofilament suited to Doha summer conditions.</li>
+                  <li>• <strong className="text-[var(--text-primary)]">Infill:</strong> heat-limiting infill designed to reduce surface heat; supplier to document performance.</li>
                   <li>• <strong className="text-[var(--text-primary)]">Underlayment:</strong> Closed-cell cross-linked polyethylene shock pad with horizontal drainage channels.</li>
                 </ul>
               </div>
@@ -323,12 +429,12 @@ export const A2FeasibilityEstimate: React.FC = () => {
                     <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                     Aquatics Chilling & UV Plant
                   </h4>
-                  <StatusChip status="FINA Code" size="sm" />
+                  <StatusChip status="World Aquatics Guidelines" size="sm" />
                 </div>
                 <ul className="text-xs text-[var(--muted-color)] space-y-1.5">
-                  <li>• <strong className="text-[var(--text-primary)]">Chiller Capacity:</strong> Titanium coaxial heat-exchange chillers calibrated to extract 280 kW thermal load during peak 49°C midday.</li>
+                  <li>• <strong className="text-[var(--text-primary)]">Chiller Capacity:</strong> Titanium coaxial heat-exchange chillers calibrated for summer cooling loads.</li>
                   <li>• <strong className="text-[var(--text-primary)]">Filtration:</strong> Multi-layer high-rate sand filtration with regenerative ozone & medium-pressure UV sanitization.</li>
-                  <li>• <strong className="text-[var(--text-primary)]">Water Balance:</strong> Automated temperature regulation fixed at 26.5°C ± 0.5°C.</li>
+                  <li>• <strong className="text-[var(--text-primary)]">Water Balance:</strong> Active chilling; to be confirmed against the current World Aquatics facility requirements.</li>
                 </ul>
               </div>
 
@@ -343,7 +449,7 @@ export const A2FeasibilityEstimate: React.FC = () => {
                 </div>
                 <ul className="text-xs text-[var(--muted-color)] space-y-1.5">
                   <li>• <strong className="text-[var(--text-primary)]">Enclosure:</strong> Marine-grade die-cast aluminium with anti-corrosion powder coating.</li>
-                  <li>• <strong className="text-[var(--text-primary)]">Thermal Management:</strong> Heavy convective fins rated for continuous lumen maintenance at 55°C ambient.</li>
+                  <li>• <strong className="text-[var(--text-primary)]">Thermal Management:</strong> Heavy convective fins rated for continuous lumen maintenance in high summer temperatures.</li>
                   <li>• <strong className="text-[var(--text-primary)]">Optical Cut-Off:</strong> Anti-glare asymmetric distribution minimizing light spill.</li>
                 </ul>
               </div>
@@ -355,12 +461,12 @@ export const A2FeasibilityEstimate: React.FC = () => {
                     <Wind className="w-4 h-4 text-blue-400" />
                     Perimeter Nets & Shaded Seating
                   </h4>
-                  <StatusChip status="UV Tier 8" size="sm" />
+                  <StatusChip status="UV Protected" size="sm" />
                 </div>
                 <ul className="text-xs text-[var(--muted-color)] space-y-1.5">
                   <li>• <strong className="text-[var(--text-primary)]">Ball Catch Nets:</strong> High-tenacity braided knotless polypropylene treated with carbon UV stabilizers.</li>
-                  <li>• <strong className="text-[var(--text-primary)]">Wind Load:</strong> Designed for Doha Shamal winds up to 120 km/h with quick-release safety points.</li>
-                  <li>• <strong className="text-[var(--text-primary)]">Grandstand:</strong> Heavy-gauge galvanized steel frame with HDPE architectural shade membrane.</li>
+                  <li>• <strong className="text-[var(--text-primary)]">Wind Load:</strong> Designed for regional wind gusts with quick-release safety points.</li>
+                  <li>• <strong className="text-[var(--text-primary)]">Grandstand:</strong> Heavy-gauge galvanized steel frame with architectural shade membrane.</li>
                 </ul>
               </div>
             </div>
@@ -379,15 +485,22 @@ export const A2FeasibilityEstimate: React.FC = () => {
           <span>EDIT FACILITY BRIEF</span>
         </button>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <button
-            type="button"
-            onClick={() => setFlowStep('A3')}
-            className="btn-primary w-full sm:w-auto gap-2 py-2.5 px-6"
-          >
-            <span>PROCEED TO TENDER PACKAGE</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+          {totalFacilities === 0 ? (
+            <div className="flex items-center gap-2 text-xs text-amber-500 font-mono">
+              <AlertCircle className="w-4 h-4" />
+              <span>Add at least one facility to create a tender.</span>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setFlowStep('A3')}
+              className="btn-primary w-full sm:w-auto gap-2 py-2.5 px-6"
+            >
+              <span>PROCEED TO TENDER PACKAGE</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>
