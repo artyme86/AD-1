@@ -38,22 +38,7 @@ export const A3TenderPackage: React.FC = () => {
     setFlowStep('A6');
   };
 
-  const getPackageImage = (title: string, category: string) => {
-    const t = (title + ' ' + category).toLowerCase();
-    if (t.includes('turf') || t.includes('surface')) {
-      return 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=400&q=80';
-    }
-    if (t.includes('pool') || t.includes('aquatic')) {
-      return 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=400&q=80';
-    }
-    if (t.includes('hall') || t.includes('arena') || t.includes('floor')) {
-      return 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=400&q=80';
-    }
-    if (t.includes('light') || t.includes('electrical')) {
-      return 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=400&q=80';
-    }
-    return 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=400&q=80';
-  };
+
 
   return (
     <div className="space-y-6">
@@ -147,17 +132,14 @@ export const A3TenderPackage: React.FC = () => {
                 key={pkg.id}
                 className="border border-[var(--border-color)] bg-[var(--panel-bg)] flex flex-col justify-between transition-colors overflow-hidden"
               >
-                {/* Package Photo */}
-                <div className="h-28 w-full overflow-hidden relative border-b border-[var(--border-color)]">
-                  <img
-                    src={getPackageImage(pkg.title, pkg.category)}
-                    alt={pkg.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/75 backdrop-blur-xs border border-white/20 text-[9px] font-mono text-white">
+                {/* Package Header Strip */}
+                <div className="h-10 w-full relative border-b border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-between px-3">
+                  <span className="text-[10px] font-mono-label text-[var(--muted-color)] uppercase tracking-wider">
                     {pkg.category}
-                  </div>
+                  </span>
+                  <span className="text-[10px] font-mono text-[var(--accent-text)]">
+                    SPEC-REF-{pkg.id.slice(-4).toUpperCase()}
+                  </span>
                 </div>
 
                 <div className="p-5 flex-1 flex flex-col justify-between space-y-3">

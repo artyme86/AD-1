@@ -14,7 +14,9 @@ export const DemoControls: React.FC = () => {
     isTenderSent,
     selectedPackageForComparison,
     tenderPackages,
-    simulateSupplierBids
+    simulateSupplierBids,
+    verifyLatestRegistration,
+    latestRegisteredEntityId
   } = useApp();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -190,6 +192,33 @@ export const DemoControls: React.FC = () => {
             {!isTenderSent && (
               <p className="text-[10px] text-[var(--muted-color)] leading-tight">
                 Send a tender first from the Plan a facility flow to enable bid simulation.
+              </p>
+            )}
+          </div>
+
+          {/* Verify Latest Registration */}
+          <div className="space-y-1.5 pt-2 border-t border-[var(--border-color)]">
+            <div className="text-[10px] font-mono-label text-[var(--muted-color)]">
+              REGISTRATION AUDIT
+            </div>
+            <button
+              type="button"
+              disabled={!latestRegisteredEntityId}
+              onClick={() => {
+                verifyLatestRegistration();
+              }}
+              className="w-full btn-action text-xs py-2 gap-1.5 justify-center text-emerald-500 border-emerald-500/40 hover:bg-emerald-500/10 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Check className="w-3.5 h-3.5" />
+              <span>VERIFY LATEST REGISTRATION</span>
+            </button>
+            {!latestRegisteredEntityId ? (
+              <p className="text-[10px] text-[var(--muted-color)] leading-tight">
+                Submit a registration to audit and unlock verified badge status.
+              </p>
+            ) : (
+              <p className="text-[10px] text-emerald-500/80 leading-tight font-mono">
+                Latest pending: {latestRegisteredEntityId}
               </p>
             )}
           </div>

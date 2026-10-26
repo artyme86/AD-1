@@ -159,18 +159,14 @@ export const A2FeasibilityEstimate: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {facilityBrief.pitches5aSide > 0 && (
             <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
-              <div className="h-28 w-full overflow-hidden relative">
-                <img
-                  src={FACILITY_ASSETS.pitches5aSide.imageUrl}
-                  alt="Pitch"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+              <div className="h-16 w-full border-b border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-between px-3">
+                <span className="px-1.5 py-0.5 bg-[var(--inset-bg)] border border-[var(--border-color)] text-[9px] font-mono text-[var(--accent-text)] font-bold">
                   {facilityBrief.pitches5aSide}x 5-A-SIDE
                 </span>
+                <span className="text-[10px] font-mono text-[var(--muted-color)]">SURFACE</span>
               </div>
               <div className="p-2.5">
-                <div className="text-xs font-bold text-[var(--heading-color)]">FIFA Quality Pro Turf</div>
+                <div className="text-xs font-bold text-[var(--heading-color)]">Premium artificial turf</div>
                 <div className="text-[10px] text-[var(--muted-color)] mt-0.5">50mm UV Monofilament + Shockpad</div>
               </div>
             </div>
@@ -178,15 +174,11 @@ export const A2FeasibilityEstimate: React.FC = () => {
 
           {facilityBrief.olympicPools > 0 && (
             <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
-              <div className="h-28 w-full overflow-hidden relative">
-                <img
-                  src={FACILITY_ASSETS.olympicPools.imageUrl}
-                  alt="Olympic Pool"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+              <div className="h-16 w-full border-b border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-between px-3">
+                <span className="px-1.5 py-0.5 bg-[var(--inset-bg)] border border-[var(--border-color)] text-[9px] font-mono text-emerald-500 font-bold">
                   {facilityBrief.olympicPools}x OLYMPIC 50M
                 </span>
+                <span className="text-[10px] font-mono text-[var(--muted-color)]">AQUATICS</span>
               </div>
               <div className="p-2.5">
                 <div className="text-xs font-bold text-[var(--heading-color)]">World Aquatics Tank</div>
@@ -197,15 +189,11 @@ export const A2FeasibilityEstimate: React.FC = () => {
 
           {facilityBrief.smallerPools > 0 && (
             <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
-              <div className="h-28 w-full overflow-hidden relative">
-                <img
-                  src={FACILITY_ASSETS.smallerPools.imageUrl}
-                  alt="Training Pool"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+              <div className="h-16 w-full border-b border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-between px-3">
+                <span className="px-1.5 py-0.5 bg-[var(--inset-bg)] border border-[var(--border-color)] text-[9px] font-mono text-blue-500 font-bold">
                   {facilityBrief.smallerPools}x TRAINING 25M
                 </span>
+                <span className="text-[10px] font-mono text-[var(--muted-color)]">TRAINING</span>
               </div>
               <div className="p-2.5">
                 <div className="text-xs font-bold text-[var(--heading-color)]">Warm-up & Youth Tank</div>
@@ -216,15 +204,11 @@ export const A2FeasibilityEstimate: React.FC = () => {
 
           {facilityBrief.indoorHalls > 0 && (
             <div className="border border-[var(--border-color)] bg-[var(--inset-bg)] overflow-hidden flex flex-col justify-between">
-              <div className="h-28 w-full overflow-hidden relative">
-                <img
-                  src={FACILITY_ASSETS.indoorHalls.imageUrl}
-                  alt="Indoor Hall"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-2 left-2 px-1.5 py-0.5 bg-black/75 border border-white/20 text-[9px] font-mono text-white">
+              <div className="h-16 w-full border-b border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-between px-3">
+                <span className="px-1.5 py-0.5 bg-[var(--inset-bg)] border border-[var(--border-color)] text-[9px] font-mono text-amber-500 font-bold">
                   {facilityBrief.indoorHalls}x ARENA
                 </span>
+                <span className="text-[10px] font-mono text-[var(--muted-color)]">INDOOR</span>
               </div>
               <div className="p-2.5">
                 <div className="text-xs font-bold text-[var(--heading-color)]">Sprung Timber Arena</div>

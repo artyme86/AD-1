@@ -17,7 +17,7 @@ export const A1FacilityBrief: React.FC = () => {
 
   const qualityTiers: { id: 'Standard' | 'Premium' | 'Elite'; label: string; desc: string }[] = [
     { id: 'Standard', label: 'Standard', desc: 'Regional sports league compliance' },
-    { id: 'Premium', label: 'Premium', desc: 'FIFA Quality & GCC heat mitigation' },
+    { id: 'Premium', label: 'Premium', desc: 'international quality certification, to be stated by the bidder & GCC heat mitigation' },
     { id: 'Elite', label: 'Elite', desc: 'Olympic & international broadcast standard' }
   ];
 

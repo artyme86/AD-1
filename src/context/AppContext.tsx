@@ -14,12 +14,21 @@ import {
   INITIAL_COACHES,
   INITIAL_SESSION_SLOTS
 } from '../data/sampleData.ts';
+import {
+  RegistrationDraft,
+  INITIAL_REGISTRATION_DRAFT,
+  Profile,
+  Credential,
+  Account,
+  Organization,
+  Service
+} from '../data/schema.ts';
 
 export type Persona = 'Club' | 'Supplier' | 'Coach' | 'Parent';
 export type RoleType = 'Client' | 'Provider';
 export type FlowId = 'A' | 'B' | 'C';
 export type ViewportMode = 'responsive' | 'mobile390';
-export type PortalType = 'business' | 'individual' | 'academic' | 'athlete' | null;
+export type PortalType = 'business' | 'individual' | 'academic' | 'athlete' | 'registration' | null;
 export type BusinessMode = 'buying' | 'selling';
 
 export interface FacilityBrief {
@@ -187,6 +196,17 @@ interface AppContextType {
   // Notification Toast
   toastMessage: string | null;
   showToast: (msg: string) => void;
+
+  // Registration Module
+  registrationDraft: RegistrationDraft;
+  updateRegistrationDraft: (updates: Partial<RegistrationDraft>) => void;
+  setRegistrationStep: (step: number) => void;
+  startRegistration: (listingType?: 'Sports Professional' | 'Sports Corporation') => void;
+  submitRegistration: () => void;
+  isRegistrationSubmitted: boolean;
+  registrationCompleteness: number;
+  verifyLatestRegistration: () => void;
+  latestRegisteredEntityId: string | null;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -790,7 +810,177 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         createdAt: 'Today, 10:15 AM'
       }
     ]);
+    setRegistrationDraft(INITIAL_REGISTRATION_DRAFT);
+    setIsRegistrationSubmitted(false);
+    setLatestRegisteredEntityId(null);
     showToast('Demo data reset to initial state.');
+  };
+
+  // Registration Draft State
+  const [registrationDraft, setRegistrationDraft] = useState<RegistrationDraft>(INITIAL_REGISTRATION_DRAFT);
+  const [isRegistrationSubmitted, setIsRegistrationSubmitted] = useState<boolean>(false);
+  const [latestRegisteredEntityId, setLatestRegisteredEntityId] = useState<string | null>(null);
+
+  const updateRegistrationDraft = (updates: Partial<RegistrationDraft>) => {
+    setRegistrationDraft((prev) => ({ ...prev, ...updates }));
+  };
+
+  const setRegistrationStep = (step: number) => {
+    setRegistrationDraft((prev) => ({ ...prev, step }));
+    setFlowStep(`R${step}`);
+  };
+
+  const startRegistration = (listingType?: 'Sports Professional' | 'Sports Corporation') => {
+    setPortalState('registration');
+    if (listingType) {
+      setRegistrationDraft((prev) => ({
+        ...prev,
+        listingType,
+        step: prev.listingType === listingType && prev.step > 1 ? prev.step : 1
+      }));
+      setFlowStep(`R${registrationDraft.listingType === listingType && registrationDraft.step > 1 ? registrationDraft.step : 1}`);
+    } else {
+      setFlowStep(`R${registrationDraft.step || 1}`);
+    }
+  };
+
+  const registrationCompleteness = isRegistrationSubmitted
+    ? 100
+    : Math.min(100, Math.round((registrationDraft.step / 8) * 100));
+
+  const submitRegistration = () => {
+    setIsRegistrationSubmitted(true);
+    const timestamp = Date.now();
+
+    if (registrationDraft.listingType === 'Sports Professional') {
+      const newCoachId = `coach-reg-${timestamp}`;
+      const newCoach: Coach = {
+        id: newCoachId,
+        name: `${registrationDraft.firstName} ${registrationDraft.lastName} (Sample)`,
+        headline: registrationDraft.specialty || registrationDraft.position || 'Sports Professional',
+        sport: registrationDraft.sport || 'Football',
+        ageGroups: registrationDraft.ageGroups.length > 0 ? registrationDraft.ageGroups : ['7–9', '10–12'],
+        location: registrationDraft.locationServingAreas[0] ? `${registrationDraft.locationServingAreas[0]}, Qatar` : `${registrationDraft.country || 'Qatar'}`,
+        sessionFormats: registrationDraft.deliveryFormats.length > 0
+          ? registrationDraft.deliveryFormats.map((f) => (f.includes('Online') ? 'Online' : 'In person'))
+          : ['In person'],
+        pricePerSessionQar: 260,
+        profileCompleteness: 95,
+        verified: false,
+        verificationDetails: {
+          idChecked: 'Passport & QID Uploaded (Pending Review)',
+          licenseNumber: registrationDraft.certifications[0]?.name || 'REG-PENDING-001',
+          licenseChecked: `${registrationDraft.certifications[0]?.name || registrationDraft.position || 'Accredited Specialist'} (Pending Governing Body Audit)`,
+          policeClearance: 'Good Conduct Clearance (Pending MOI Verification)',
+          safeguarding: 'SafeSport Clearance in review',
+          firstAid: 'Emergency First Aid (Pending review)',
+          authority: registrationDraft.certifications[0]?.issuingBody || 'Qatar Sports Authority Queue',
+          verifiedDate: 'Pending Verification',
+          accreditations: registrationDraft.certifications.map((c) => c.name),
+          safeguardingClearance: 'Pending Child Protection Audit'
+        },
+        licenses: registrationDraft.certifications.map((c) => ({
+          title: c.name,
+          issuer: c.issuingBody,
+          status: 'Pending',
+          year: c.year
+        })),
+        experience: registrationDraft.workExperience.map((w) => ({
+          period: `${w.startDate} – ${w.currentlyWorkingHere ? 'Present' : w.endDate}`,
+          role: w.title,
+          organization: w.companyOrClub,
+          details: w.description
+        })),
+        languages: registrationDraft.languages.map((l) => `${l.language} (${l.proficiency})`),
+        availability: 'Available upon request',
+        preferredRoles: [registrationDraft.position || 'Sports Professional'],
+        bio: registrationDraft.bio,
+        avatarUrl: registrationDraft.profilePictureUrl || '',
+        reviewCount: 0,
+        emptyReviewNote: 'No reviews yet. Reviews appear after completed sessions',
+        criteriaMatch: { license: false, ageGroup: true, location: true }
+      };
+
+      setCoaches((prev) => [newCoach, ...prev]);
+      setLatestRegisteredEntityId(newCoachId);
+    } else {
+      const newSupplierId = `sup-reg-${timestamp}`;
+      const newSupplier: Supplier = {
+        id: newSupplierId,
+        name: `${registrationDraft.corporationTitle} (Sample)`,
+        contactPerson: `${registrationDraft.firstName || 'Lead'} ${registrationDraft.lastName || 'Representative'}`,
+        location: `${registrationDraft.registeredCity || 'Doha'}, Qatar`,
+        category: registrationDraft.primaryCategory || registrationDraft.corporationType || 'Sports Facilities',
+        verified: false,
+        verificationDetails: {
+          crNumber: 'CR-PENDING-8821',
+          verifiedDate: 'Pending Verification',
+          authority: 'Ministry of Commerce & Industry Audit Queue',
+          accreditations: registrationDraft.certifications.map((c) => c.name),
+          safeguardingClearance: 'Commercial compliance review active'
+        },
+        bid: {
+          priceQar: 880000,
+          product: registrationDraft.tagline || 'Custom Corporate Package',
+          deliveryWeeks: 6,
+          warrantyYears: 10,
+          tag: 'Standard',
+          notes: registrationDraft.description
+        }
+      };
+
+      setSuppliers((prev) => [newSupplier, ...prev]);
+      setLatestRegisteredEntityId(newSupplierId);
+    }
+
+    setFlowStep('reg-success');
+    showToast('Registration dossier received. Profile status: Pending verification.');
+  };
+
+  const verifyLatestRegistration = () => {
+    if (!latestRegisteredEntityId) {
+      showToast('No pending registration found to verify.');
+      return;
+    }
+
+    let found = false;
+    setCoaches((prev) =>
+      prev.map((c) => {
+        if (c.id === latestRegisteredEntityId) {
+          found = true;
+          return {
+            ...c,
+            verified: true,
+            verificationDetails: {
+              ...c.verificationDetails,
+              verifiedDate: 'Audited & Verified Today',
+              safeguardingClearance: 'Approved by State Sports Authority'
+            },
+            licenses: c.licenses.map((l) => ({ ...l, status: 'Verified' as const }))
+          };
+        }
+        return c;
+      })
+    );
+
+    setSuppliers((prev) =>
+      prev.map((s) => {
+        if (s.id === latestRegisteredEntityId) {
+          found = true;
+          return {
+            ...s,
+            verified: true,
+            verificationDetails: {
+              ...s.verificationDetails,
+              verifiedDate: 'Audited & Verified Today'
+            }
+          };
+        }
+        return s;
+      })
+    );
+
+    showToast('Latest registration successfully audited and marked as Verified.');
   };
 
   // Sync HTML body class for theme
@@ -882,7 +1072,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
         // Toast
         toastMessage,
-        showToast
+        showToast,
+
+        // Registration Module
+        registrationDraft,
+        updateRegistrationDraft,
+        setRegistrationStep,
+        startRegistration,
+        submitRegistration,
+        isRegistrationSubmitted,
+        registrationCompleteness,
+        verifyLatestRegistration,
+        latestRegisteredEntityId
       }}
     >
       {children}

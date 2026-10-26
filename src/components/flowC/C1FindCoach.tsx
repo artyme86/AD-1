@@ -11,7 +11,7 @@ export const C1FindCoach: React.FC = () => {
     'Doha Central, Qatar',
     'The Pearl & West Bay',
     'Lusail Marina',
-    'Aspire Zone & West District'
+    'West District Sports Campus (Sample)'
   ];
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
   const formats = ['In person', 'Online / Hybrid'];
@@ -79,39 +79,25 @@ export const C1FindCoach: React.FC = () => {
               01. SELECT SPORT *
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
-                { name: 'Football', img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=300&q=80' },
-                { name: 'Swimming', img: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=300&q=80' },
-                { name: 'Tennis', img: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=300&q=80' },
-                { name: 'Athletics', img: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=300&q=80' }
-              ].map(({ name, img }) => (
+              {['Football', 'Swimming', 'Tennis', 'Athletics'].map((name) => (
                 <button
                   key={name}
                   type="button"
                   onClick={() => setParentSearch((prev) => ({ ...prev, sport: name }))}
-                  className={`border flex flex-col items-center justify-between overflow-hidden text-xs transition-colors cursor-pointer text-left ${
+                  className={`border flex flex-col items-center justify-center p-3 text-xs transition-colors cursor-pointer text-center ${
                     parentSearch.sport === name
                       ? 'border-[var(--accent-red)] bg-[var(--inset-bg)] ring-1 ring-[var(--accent-red)]'
                       : 'border-[var(--border-color)] bg-[var(--panel-bg)] hover:border-[var(--border-hover)]'
                   }`}
                 >
-                  <div className="h-16 w-full overflow-hidden relative">
-                    <img
-                      src={img}
-                      alt={name}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/20" />
-                  </div>
-                  <div className="p-2 w-full text-center">
-                    <span className={`font-mono text-xs ${
-                      parentSearch.sport === name
-                        ? 'font-bold text-[var(--heading-color)]'
-                        : 'text-[var(--text-primary)]'
-                    }`}>
-                      {name}
-                    </span>
-                  </div>
+                  <Activity className={`w-5 h-5 mb-1.5 ${parentSearch.sport === name ? 'text-[var(--accent-red)]' : 'text-[var(--muted-color)]'}`} />
+                  <span className={`font-mono text-xs ${
+                    parentSearch.sport === name
+                      ? 'font-bold text-[var(--heading-color)]'
+                      : 'text-[var(--text-primary)]'
+                  }`}>
+                    {name}
+                  </span>
                 </button>
               ))}
             </div>

@@ -92,16 +92,8 @@ export const A4RequestsInbox: React.FC = () => {
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                     <div className="flex items-start gap-3.5">
-                      <div className="w-16 h-16 border border-[var(--border-color)] overflow-hidden shrink-0 hidden sm:block relative">
-                        <img
-                          src={req.category.toLowerCase().includes('aquatic') || req.title.toLowerCase().includes('pool')
-                            ? 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=300&q=80'
-                            : req.category.toLowerCase().includes('arena') || req.title.toLowerCase().includes('hall')
-                            ? 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=300&q=80'
-                            : 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=300&q=80'}
-                          alt={req.title}
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-12 h-12 border border-[var(--border-color)] bg-[var(--inset-bg)] flex items-center justify-center shrink-0 hidden sm:flex text-[var(--accent-text)]">
+                        <Building2 className="w-5 h-5" />
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
@@ -180,10 +172,14 @@ export const A4RequestsInbox: React.FC = () => {
               <span className="text-xs font-mono-label text-[var(--muted-color)]">
                 YOUR VERIFIED LISTING
               </span>
-              <VerifiedBadge
-                name={mySupplierProfile.name}
-                details={mySupplierProfile.verificationDetails}
-              />
+              {mySupplierProfile.verified ? (
+                <VerifiedBadge
+                  name={mySupplierProfile.name}
+                  details={mySupplierProfile.verificationDetails}
+                />
+              ) : (
+                <StatusChip status="Pending" />
+              )}
             </div>
 
             <div className="space-y-1">

@@ -144,10 +144,14 @@ export const C2Results: React.FC = () => {
                   </div>
                 </div>
 
-                <VerifiedBadge
-                  name={coach.name}
-                  details={coach.verificationDetails}
-                />
+                {coach.verified ? (
+                  <VerifiedBadge
+                    name={coach.name}
+                    details={coach.verificationDetails}
+                  />
+                ) : (
+                  <StatusChip status="Pending" />
+                )}
               </div>
 
               {/* Headline */}

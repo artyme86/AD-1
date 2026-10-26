@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Award, CheckCircle2, Clock, ShieldCheck, ArrowRight, Play, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Award, CheckCircle2, Clock, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
 import { useApp } from '../../context/AppContext.tsx';
 import { StatusChip } from '../shared/StatusChip.tsx';
 import { VerifiedBadge } from '../shared/VerifiedBadge.tsx';
@@ -15,7 +15,6 @@ export const A6BidComparison: React.FC = () => {
     selectedPackageForComparison,
     setSelectedPackageForComparison,
     bids,
-    simulateSupplierBids,
     setFlowStep
   } = useApp();
 
@@ -136,38 +135,7 @@ export const A6BidComparison: React.FC = () => {
         </div>
       )}
 
-      {/* Demo Controls Panel (Only visible when ?demo=1 in URL) */}
-      {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('demo') === '1' && (
-        <div className="p-4 border border-[var(--border-color)] bg-[var(--inset-bg)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-1.5 font-mono-label text-xs text-[var(--heading-color)]">
-              <Play className="w-3.5 h-3.5 text-[var(--accent-red)]" />
-              <span>DEMO CONTROLS PANEL</span>
-            </div>
-            <p className="text-xs text-[var(--muted-color)]">
-              Tender bids must come from actions. As supplier, submit a live bid in A5, or use this button to simulate two competitor bids.
-            </p>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => simulateSupplierBids(activePackage.id)}
-              className="btn-action text-xs py-2 px-3 gap-1.5 text-amber-500 border-amber-500/40 hover:bg-amber-500/10"
-            >
-              <Play className="w-3.5 h-3.5" />
-              <span>SIMULATE SUPPLIER BIDS</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setFlowStep('A5')}
-              className="btn-action text-xs py-2 px-3"
-            >
-              SUBMIT AS SUPPLIER (A5)
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Post-Award Stepper */}
       {awardedSupplierId && (
@@ -272,10 +240,14 @@ export const A6BidComparison: React.FC = () => {
                         )}
                       </div>
 
-                      <VerifiedBadge
-                        name={supplier.name}
-                        details={supplier.verificationDetails}
-                      />
+                      {supplier.verified ? (
+                        <VerifiedBadge
+                          name={supplier.name}
+                          details={supplier.verificationDetails}
+                        />
+                      ) : (
+                        <StatusChip status="Pending" />
+                      )}
                     </div>
 
                     {/* Company Name & Location */}

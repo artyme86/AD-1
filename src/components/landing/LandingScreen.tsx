@@ -4,7 +4,7 @@ import { useApp } from '../../context/AppContext.tsx';
 import { StatusChip } from '../shared/StatusChip.tsx';
 
 export const LandingScreen: React.FC = () => {
-  const { setPortal, setMode, setFlowStep } = useApp();
+  const { setPortal, setMode, setFlowStep, startRegistration } = useApp();
 
   const handleOpenBusiness = () => {
     setMode('buying');
@@ -52,25 +52,21 @@ export const LandingScreen: React.FC = () => {
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleOpenBusiness()}
         >
-          {/* Card Image Header */}
-          <div className="h-40 sm:h-44 w-full relative overflow-hidden border-b border-[var(--border-color)]">
-            <img
-              src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80"
-              alt="Sports Infrastructure & Stadium Facilities"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel-bg)] via-black/40 to-transparent" />
-            <div className="absolute top-3 left-3 flex items-center gap-2">
-              <div className="w-8 h-8 border border-white/20 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white">
-                <Building2 className="w-4 h-4 text-[var(--accent-text)]" />
+          {/* Card Banner Header */}
+          <div className="h-28 sm:h-32 w-full relative overflow-hidden border-b border-[var(--border-color)] bg-[var(--inset-bg)] p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 border border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-center text-[var(--heading-color)]">
+                  <Building2 className="w-4 h-4 text-[var(--accent-text)]" />
+                </div>
+                <span className="text-[10px] font-mono-label text-[var(--heading-color)] bg-[var(--panel-bg)] border border-[var(--border-color)] px-2 py-0.5">
+                  B2B & INSTITUTIONAL
+                </span>
               </div>
-              <span className="text-[10px] font-mono-label text-white/90 bg-black/70 backdrop-blur-xs border border-white/20 px-2 py-0.5">
-                B2B & INSTITUTIONAL
-              </span>
             </div>
-            <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-white/80">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[var(--muted-color)] border-t border-[var(--border-color)]/50 pt-2">
               <span>TURF · AQUATICS · ARENAS</span>
-              <span className="text-emerald-400 font-bold">53+ Verified Suppliers</span>
+              <span className="text-emerald-500 font-bold">53+ Verified Suppliers</span>
             </div>
           </div>
 
@@ -84,16 +80,28 @@ export const LandingScreen: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-5 mt-5 border-t border-[var(--border-color)] flex items-center justify-between">
-              <span className="text-xs font-mono-label text-[var(--heading-color)] group-hover:text-[var(--accent-text)] flex items-center gap-2 font-bold">
+            <div className="pt-5 mt-5 border-t border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenBusiness();
+                }}
+                className="text-xs font-mono-label text-[var(--heading-color)] group-hover:text-[var(--accent-text)] flex items-center gap-2 font-bold"
+              >
                 <span>ENTER BUSINESS PORTAL</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </span>
-              <div className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--muted-color)]">
-                <span>Buying</span>
-                <span>·</span>
-                <span>Selling</span>
-              </div>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  startRegistration('Sports Corporation');
+                }}
+                className="px-3 py-1.5 bg-accent text-white font-mono text-[11px] uppercase tracking-wider hover:opacity-90 transition-opacity min-h-[36px]"
+              >
+                Register
+              </button>
             </div>
           </div>
         </div>
@@ -106,25 +114,21 @@ export const LandingScreen: React.FC = () => {
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleOpenIndividual()}
         >
-          {/* Card Image Header */}
-          <div className="h-40 sm:h-44 w-full relative overflow-hidden border-b border-[var(--border-color)]">
-            <img
-              src="https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=800&q=80"
-              alt="Certified Sports Coaches and Practitioners"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel-bg)] via-black/40 to-transparent" />
-            <div className="absolute top-3 left-3 flex items-center gap-2">
-              <div className="w-8 h-8 border border-white/20 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white">
-                <User className="w-4 h-4 text-emerald-400" />
+          {/* Card Banner Header */}
+          <div className="h-28 sm:h-32 w-full relative overflow-hidden border-b border-[var(--border-color)] bg-[var(--inset-bg)] p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 border border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-center text-[var(--heading-color)]">
+                  <User className="w-4 h-4 text-emerald-500" />
+                </div>
+                <span className="text-[10px] font-mono-label text-[var(--heading-color)] bg-[var(--panel-bg)] border border-[var(--border-color)] px-2 py-0.5">
+                  PRACTITIONERS & TALENT
+                </span>
               </div>
-              <span className="text-[10px] font-mono-label text-white/90 bg-black/70 backdrop-blur-xs border border-white/20 px-2 py-0.5">
-                PRACTITIONERS & TALENT
-              </span>
             </div>
-            <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-white/80">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[var(--muted-color)] border-t border-[var(--border-color)]/50 pt-2">
               <span>AFC / UEFA / ITF ACCREDITED</span>
-              <span className="text-emerald-400 font-bold">Audited Licenses</span>
+              <span className="text-emerald-500 font-bold">Audited Licenses</span>
             </div>
           </div>
 
@@ -138,16 +142,28 @@ export const LandingScreen: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-5 mt-5 border-t border-[var(--border-color)] flex items-center justify-between">
-              <span className="text-xs font-mono-label text-[var(--heading-color)] group-hover:text-[var(--accent-text)] flex items-center gap-2 font-bold">
+            <div className="pt-5 mt-5 border-t border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenIndividual();
+                }}
+                className="text-xs font-mono-label text-[var(--heading-color)] group-hover:text-[var(--accent-text)] flex items-center gap-2 font-bold"
+              >
                 <span>ENTER INDIVIDUAL PORTAL</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </span>
-              <div className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--muted-color)]">
-                <span>Profile</span>
-                <span>·</span>
-                <span>Vacancies</span>
-              </div>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  startRegistration('Sports Professional');
+                }}
+                className="px-3 py-1.5 bg-accent text-white font-mono text-[11px] uppercase tracking-wider hover:opacity-90 transition-opacity min-h-[36px]"
+              >
+                Register
+              </button>
             </div>
           </div>
         </div>
@@ -160,23 +176,19 @@ export const LandingScreen: React.FC = () => {
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleOpenAcademic()}
         >
-          {/* Card Image Header */}
-          <div className="h-40 sm:h-44 w-full relative overflow-hidden border-b border-[var(--border-color)]">
-            <img
-              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
-              alt="Sports Science and Biomechanics Laboratory"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel-bg)] via-black/40 to-transparent" />
-            <div className="absolute top-3 left-3 flex items-center gap-2">
-              <div className="w-8 h-8 border border-white/20 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white">
-                <GraduationCap className="w-4 h-4 text-purple-400" />
+          {/* Card Banner Header */}
+          <div className="h-28 sm:h-32 w-full relative overflow-hidden border-b border-[var(--border-color)] bg-[var(--inset-bg)] p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 border border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-center text-[var(--heading-color)]">
+                  <GraduationCap className="w-4 h-4 text-purple-400" />
+                </div>
+                <StatusChip status="Planned" />
               </div>
-              <StatusChip status="Planned" />
             </div>
-            <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-white/80">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[var(--muted-color)] border-t border-[var(--border-color)]/50 pt-2">
               <span>RESEARCH & BIOMECHANICS</span>
-              <span className="text-purple-300">Cohort Studies</span>
+              <span className="text-purple-400 font-bold">Cohort Studies</span>
             </div>
           </div>
 
@@ -210,25 +222,21 @@ export const LandingScreen: React.FC = () => {
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleOpenAthlete()}
         >
-          {/* Card Image Header */}
-          <div className="h-40 sm:h-44 w-full relative overflow-hidden border-b border-[var(--border-color)]">
-            <img
-              src="https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&w=800&q=80"
-              alt="Youth Athletics and Private Coaching"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--panel-bg)] via-black/40 to-transparent" />
-            <div className="absolute top-3 left-3 flex items-center gap-2">
-              <div className="w-8 h-8 border border-white/20 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white">
-                <Users className="w-4 h-4 text-blue-400" />
+          {/* Card Banner Header */}
+          <div className="h-28 sm:h-32 w-full relative overflow-hidden border-b border-[var(--border-color)] bg-[var(--inset-bg)] p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 border border-[var(--border-color)] bg-[var(--panel-bg)] flex items-center justify-center text-[var(--heading-color)]">
+                  <Users className="w-4 h-4 text-blue-400" />
+                </div>
+                <span className="px-2 py-0.5 border border-amber-500/60 text-amber-500 bg-[var(--panel-bg)] font-mono-label text-[10px]">
+                  Preview. Opens after provider registration.
+                </span>
               </div>
-              <span className="px-2 py-0.5 border border-amber-500/60 text-amber-300 bg-black/70 backdrop-blur-xs font-mono-label text-[10px]">
-                Preview. Opens after provider registration.
-              </span>
             </div>
-            <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-white/80">
+            <div className="flex items-center justify-between text-[11px] font-mono text-[var(--muted-color)] border-t border-[var(--border-color)]/50 pt-2">
               <span>SAFESPORT CHILD PROTECTION</span>
-              <span className="text-blue-300 font-bold">100% ID Verified</span>
+              <span className="text-blue-400 font-bold">100% ID Verified</span>
             </div>
           </div>
 
@@ -275,21 +283,17 @@ export const LandingScreen: React.FC = () => {
           {/* Pillar 1 */}
           <div className="border border-[var(--border-color)] bg-[var(--panel-bg)] p-4 flex flex-col justify-between">
             <div>
-              <div className="h-32 w-full overflow-hidden border border-[var(--border-color)] mb-3 relative">
-                <img
-                  src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=600&q=80"
-                  alt="FIFA Quality Pro Synthetic Turf"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-black/70 border border-white/20 text-[9px] font-mono text-emerald-400">
+              <div className="h-14 w-full border border-[var(--border-color)] bg-[var(--inset-bg)] mb-3 p-2.5 flex items-center justify-between">
+                <span className="text-xs font-mono-label text-[var(--accent-text)] font-bold">SPEC-SURFACES</span>
+                <span className="px-1.5 py-0.5 bg-[var(--panel-bg)] border border-[var(--border-color)] text-[9px] font-mono text-emerald-500 font-bold">
                   CR-VERIFIED
-                </div>
+                </span>
               </div>
               <h4 className="font-heading text-sm font-bold text-[var(--heading-color)] mb-1">
                 Civil Infrastructure & Surfaces
               </h4>
               <p className="text-xs text-[var(--muted-color)] leading-relaxed">
-                FIFA Quality Pro artificial turf, World Aquatics 10-lane competition tanks, and FIBA sprung wooden courts tendered directly to verified suppliers.
+                Premium artificial turf (international quality certification, to be stated by the bidder), World Aquatics 10-lane competition tanks, and FIBA sprung wooden courts tendered directly to verified suppliers.
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[var(--border-color)] flex items-center justify-between text-[10px] font-mono text-[var(--muted-color)]">
@@ -301,15 +305,11 @@ export const LandingScreen: React.FC = () => {
           {/* Pillar 2 */}
           <div className="border border-[var(--border-color)] bg-[var(--panel-bg)] p-4 flex flex-col justify-between">
             <div>
-              <div className="h-32 w-full overflow-hidden border border-[var(--border-color)] mb-3 relative">
-                <img
-                  src="https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=600&q=80"
-                  alt="Licensed Coaching Personnel"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-black/70 border border-white/20 text-[9px] font-mono text-emerald-400">
+              <div className="h-14 w-full border border-[var(--border-color)] bg-[var(--inset-bg)] mb-3 p-2.5 flex items-center justify-between">
+                <span className="text-xs font-mono-label text-emerald-500 font-bold">COACHING LICENSES</span>
+                <span className="px-1.5 py-0.5 bg-[var(--panel-bg)] border border-[var(--border-color)] text-[9px] font-mono text-emerald-500 font-bold">
                   QFA & UEFA AUDITED
-                </div>
+                </span>
               </div>
               <h4 className="font-heading text-sm font-bold text-[var(--heading-color)] mb-1">
                 Accredited Coaching Licenses
@@ -327,15 +327,11 @@ export const LandingScreen: React.FC = () => {
           {/* Pillar 3 */}
           <div className="border border-[var(--border-color)] bg-[var(--panel-bg)] p-4 flex flex-col justify-between">
             <div>
-              <div className="h-32 w-full overflow-hidden border border-[var(--border-color)] mb-3 relative">
-                <img
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80"
-                  alt="Sports Science and Analytics"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-black/70 border border-white/20 text-[9px] font-mono text-purple-400">
+              <div className="h-14 w-full border border-[var(--border-color)] bg-[var(--inset-bg)] mb-3 p-2.5 flex items-center justify-between">
+                <span className="text-xs font-mono-label text-purple-400 font-bold">SPORTS SCIENCE</span>
+                <span className="px-1.5 py-0.5 bg-[var(--panel-bg)] border border-[var(--border-color)] text-[9px] font-mono text-purple-400 font-bold">
                   PLANNED
-                </div>
+                </span>
               </div>
               <h4 className="font-heading text-sm font-bold text-[var(--heading-color)] mb-1">
                 Sports Science & Lab Cohorts

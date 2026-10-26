@@ -64,6 +64,7 @@ export const Header: React.FC = () => {
                 {portal === 'individual' && 'INDIVIDUAL PORTAL'}
                 {portal === 'academic' && 'ACADEMIC PORTAL'}
                 {portal === 'athlete' && 'ATHLETE & PARENT'}
+                {portal === 'registration' && 'REGISTRATION'}
               </span>
               {portal === 'athlete' && (
                 <span className="px-1.5 py-0.5 border border-amber-500/40 text-amber-500 bg-amber-500/10 font-mono text-[9px] hidden lg:inline">
@@ -75,7 +76,7 @@ export const Header: React.FC = () => {
         )}
 
         {/* Role Chip */}
-        {portal && portal !== 'academic' && (
+        {portal && portal !== 'academic' && portal !== 'registration' && (
           <div
             className={`px-2 py-0.5 border font-mono-label text-[10px] tracking-wider hidden md:inline-flex items-center gap-1 ${
               role === 'Client'

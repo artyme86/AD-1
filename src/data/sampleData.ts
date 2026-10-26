@@ -135,30 +135,30 @@ export interface FacilityAsset {
 export const FACILITY_ASSETS: Record<string, FacilityAsset> = {
   pitches5aSide: {
     id: 'pitches5aSide',
-    name: '5-a-side Pitch (FIFA Quality Pro)',
+    name: '5-a-side Pitch (Premium artificial turf)',
     subtitle: 'Synthetic turf system with shockpad & infill',
-    imageUrl: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '',
     specs: ['50mm Monofilament turf', '15mm Prefabricated shockpad', '4m Perimeter containment netting', '300 Lux LED sports floodlighting']
   },
   olympicPools: {
     id: 'olympicPools',
     name: 'Olympic 50m Competition Pool',
     subtitle: 'World Aquatics 10-lane competition tank',
-    imageUrl: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '',
     specs: ['50m × 25m × 2.0m depth', '10 Competition lanes with anti-wave ropes', 'Omega timing touchpads & starting blocks', 'Commercial sand filtration & heat pumps']
   },
   smallerPools: {
     id: 'smallerPools',
     name: '25m Warm-up / Training Pool',
     subtitle: 'Short-course swimming & training tank',
-    imageUrl: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c224?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '',
     specs: ['25m × 12.5m × 1.4m depth', '5 Dedicated training lanes', 'Pediatric learn-to-swim entry zone', 'Constant temperature control (28°C)']
   },
   indoorHalls: {
     id: 'indoorHalls',
     name: 'Multi-Sport Indoor Arena',
     subtitle: 'Area-elastic timber sprung flooring',
-    imageUrl: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=600&q=80',
+    imageUrl: '',
     specs: ['Point-elastic sprung maple floor', 'FIBA / BWF multi-court line markings', 'Acoustic wall attenuation panels', 'HVAC climate control for desert conditions']
   }
 };
@@ -250,7 +250,7 @@ export const INITIAL_VACANCIES: Vacancy[] = [
     languages: ["Arabic", "English"],
     salarySample: "QAR 22,000 - 28,000 / month (Sample)",
     publishedDate: "2 days ago",
-    bannerUrl: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80",
+    bannerUrl: "",
     clubLogoColor: "#E50000",
     requirements: [
       "Valid AFC/UEFA 'B' or equivalent national governing body license, as recognised by the hiring club",
@@ -280,7 +280,7 @@ export const INITIAL_VACANCIES: Vacancy[] = [
     languages: ["Arabic", "English"],
     salarySample: "QAR 8,000 - 12,000 / month (Sample)",
     publishedDate: "5 days ago",
-    bannerUrl: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=800&q=80",
+    bannerUrl: "",
     clubLogoColor: "#0284C7",
     requirements: [
       "AFC 'C' or UEFA 'C' license, as recognised by the hiring club",
@@ -308,7 +308,7 @@ export const INITIAL_VACANCIES: Vacancy[] = [
     languages: ["English"],
     salarySample: "QAR 18,000 - 24,000 / month (Sample)",
     publishedDate: "1 week ago",
-    bannerUrl: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=800&q=80",
+    bannerUrl: "",
     clubLogoColor: "#D97706",
     requirements: [
       "ITF Level 2 or equivalent national governing body license, as recognised by the hiring club",
@@ -327,14 +327,14 @@ export const INITIAL_VACANCIES: Vacancy[] = [
     sport: "Swimming",
     ageGroup: "7–12",
     contractType: "Full-time",
-    location: "Aspire Zone, Doha",
+    location: "West District Sports Campus (Sample)",
     startDate: "15 Sep 2026",
     minLicense: "World Aquatics Level 2 / ASCA 3 (as recognised by the hiring club)",
     minExperienceYears: 5,
     languages: ["English", "Arabic"],
     salarySample: "QAR 20,000 - 26,000 / month (Sample)",
     publishedDate: "3 days ago",
-    bannerUrl: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=800&q=80",
+    bannerUrl: "",
     clubLogoColor: "#059669",
     requirements: [
       "World Aquatics Level 2 coach certification, as recognised by the hiring club",
@@ -343,7 +343,7 @@ export const INITIAL_VACANCIES: Vacancy[] = [
     responsibilities: [
       "Lead age-group swim squad training, stroke analysis, and meet entries"
     ],
-    benefits: "Aspire campus facilities pass, annual relocation allowance, family medical cover.",
+    benefits: "campus facilities pass, annual relocation allowance, family medical cover.",
     criteriaMatch: { license: false, ageGroup: true, location: true }
   }
 ];
@@ -387,7 +387,7 @@ export const INITIAL_COACHES: Coach[] = [
     availability: "Weekdays 15:30 – 19:30, Saturdays 08:30 – 13:00",
     preferredRoles: ["Head Youth Coach", "Private Technical Specialist"],
     bio: "Dedicated youth development coach with over eight years specializing in technical foundations, spatial cognition, and character building for young footballers aged 7 to 12. Committed to safe, positive, and structured athletic growth.",
-    avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80",
+    avatarUrl: "",
     reviewCount: 0,
     emptyReviewNote: "No reviews yet. Reviews appear after completed sessions",
     criteriaMatch: { license: true, ageGroup: true, location: true }
@@ -427,7 +427,7 @@ export const INITIAL_COACHES: Coach[] = [
     availability: "Sundays, Tuesdays, Thursdays, Saturdays",
     preferredRoles: ["Private Skills Coach", "Grassroots Instructor"],
     bio: "Energetic and patient coach focused on boosting young players' dribbling, footwork, balance, and game confidence through fun, repetitive drills.",
-    avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    avatarUrl: "",
     reviewCount: 0,
     emptyReviewNote: "No reviews yet. Reviews appear after completed sessions",
     criteriaMatch: { license: true, ageGroup: true, location: true }
@@ -467,7 +467,7 @@ export const INITIAL_COACHES: Coach[] = [
     availability: "Monday – Thursday afternoons",
     preferredRoles: ["Head Youth Coach", "Technical Director"],
     bio: "Over 12 years in European and Gulf professional academies developing tactical IQ, decision making under pressure, and elite habits.",
-    avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
+    avatarUrl: "",
     reviewCount: 0,
     emptyReviewNote: "No reviews yet. Reviews appear after completed sessions",
     criteriaMatch: { license: true, ageGroup: true, location: true }
@@ -478,7 +478,7 @@ export const INITIAL_COACHES: Coach[] = [
     headline: "Youth Competitive Swimming & Stroke Technique Coach",
     sport: "Swimming",
     ageGroups: ["7–9", "10–12"],
-    location: "Lusail & Aspire Zone, Doha",
+    location: "Lusail & West District Sports Campus (Sample)",
     sessionFormats: ["In person"],
     pricePerSessionQar: 300,
     profileCompleteness: 90,
@@ -506,7 +506,7 @@ export const INITIAL_COACHES: Coach[] = [
     availability: "Tuesdays, Thursdays, Fridays, Saturdays",
     preferredRoles: ["Private Swim Instructor", "Age-Group Coach"],
     bio: "Former national swimmer specializing in teaching correct biomechanics, water confidence, and competitive endurance for youth.",
-    avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+    avatarUrl: "",
     reviewCount: 0,
     emptyReviewNote: "No reviews yet. Reviews appear after completed sessions",
     criteriaMatch: { license: false, ageGroup: true, location: true }
@@ -545,7 +545,7 @@ export const INITIAL_COACHES: Coach[] = [
     availability: "Mondays, Wednesdays, Saturdays",
     preferredRoles: ["Private Tennis Coach", "Academy Lead"],
     bio: "Specialized in progressive ball and court sizes for young juniors to develop smooth stroke mechanics and court movement.",
-    avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80",
+    avatarUrl: "",
     reviewCount: 0,
     emptyReviewNote: "No reviews yet. Reviews appear after completed sessions",
     criteriaMatch: { license: false, ageGroup: true, location: true }
@@ -589,7 +589,7 @@ export const INITIAL_SESSION_SLOTS: SessionSlot[] = [
     id: "slot-5",
     day: "Saturday",
     time: "09:00 – 10:00",
-    location: "Aspire Outdoor Turf 3, Aspire Zone",
+    location: "Campus Outdoor Turf 3 (Sample)",
     surface: "Certified Synthetic Turf (Shaded, Sample)",
     isAvailable: true
   },
@@ -597,7 +597,7 @@ export const INITIAL_SESSION_SLOTS: SessionSlot[] = [
     id: "slot-6",
     day: "Saturday",
     time: "10:15 – 11:15",
-    location: "Aspire Outdoor Turf 3, Aspire Zone",
+    location: "Campus Outdoor Turf 3 (Sample)",
     surface: "Certified Synthetic Turf (Shaded, Sample)",
     isAvailable: true
   }

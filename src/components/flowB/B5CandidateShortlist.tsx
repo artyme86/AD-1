@@ -134,10 +134,14 @@ export const B5CandidateShortlist: React.FC = () => {
                     </div>
                   </div>
 
-                  <VerifiedBadge
-                    name={coach.name}
-                    details={coach.verificationDetails}
-                  />
+                  {coach.verified ? (
+                    <VerifiedBadge
+                      name={coach.name}
+                      details={coach.verificationDetails}
+                    />
+                  ) : (
+                    <StatusChip status="Pending" />
+                  )}
                 </div>
 
                 {/* Headline */}
@@ -270,7 +274,11 @@ export const B5CandidateShortlist: React.FC = () => {
                 <div key={c.id} className="p-4 border border-[var(--border-color)] bg-[var(--inset-bg)] space-y-3">
                   <div className="flex items-center justify-between">
                     <h4 className="font-heading text-sm text-[var(--heading-color)]">{c.name}</h4>
-                    <VerifiedBadge name={c.name} details={c.verificationDetails} />
+                    {c.verified ? (
+                      <VerifiedBadge name={c.name} details={c.verificationDetails} />
+                    ) : (
+                      <StatusChip status="Pending" />
+                    )}
                   </div>
 
                   <div className="space-y-2 text-xs">

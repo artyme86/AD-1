@@ -10,6 +10,7 @@ import { VerifiedModal } from './components/shared/VerifiedModal.tsx';
 import { DemoControls } from './components/shared/DemoControls.tsx';
 import { LandingScreen } from './components/landing/LandingScreen.tsx';
 import { AcademicPortal } from './components/academic/AcademicPortal.tsx';
+import { RegistrationWizard } from './components/registration/RegistrationWizard.tsx';
 
 // Business Portal Screens
 import { A1FacilityBrief } from './components/flowA/A1FacilityBrief.tsx';
@@ -45,7 +46,10 @@ const AppContent: React.FC = () => {
     setFlowStep,
     viewportMode,
     setViewportMode,
-    toastMessage
+    toastMessage,
+    registrationCompleteness,
+    isRegistrationSubmitted,
+    startRegistration,
   } = useApp();
 
   // Define section navigation metadata and stepper items
@@ -180,6 +184,10 @@ const AppContent: React.FC = () => {
       return <LandingScreen />;
     }
 
+    if (portal === 'registration') {
+      return <RegistrationWizard />;
+    }
+
     if (portal === 'academic') {
       return <AcademicPortal />;
     }
@@ -246,7 +254,7 @@ const AppContent: React.FC = () => {
       <Header />
 
       {/* Breadcrumb & Stepper Sub-Navbar (only when inside an active portal) */}
-      {portal && portal !== 'academic' && (
+      {portal && portal !== 'academic' && portal !== 'registration' && (
         <div className="bg-[var(--panel-bg)] border-b border-[var(--border-color)] px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
           {/* Left: Breadcrumb */}
           <div className="flex items-center gap-2 flex-wrap">
@@ -281,6 +289,31 @@ const AppContent: React.FC = () => {
 
       {/* Main Workspace */}
       <main className="flex-1 py-6 px-4 sm:px-6 max-w-[1440px] w-full mx-auto">
+        {/* Complete your registration banner for Individual and Business portals */}
+        {(portal === 'individual' || portal === 'business') && !isRegistrationSubmitted && (
+          <div className="mb-6 p-4 border border-amber-500/40 bg-amber-500/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-amber-500 shrink-0" />
+              <div>
+                <span className="font-bold text-[var(--heading-color)] font-mono">
+                  Complete your registration ({registrationCompleteness}% completed)
+                </span>
+                <span className="block text-[11px] text-[var(--muted-color)]">
+                  {portal === 'business'
+                    ? 'Verify your corporation details and facilities to submit accredited bids and post tenders.'
+                    : 'Complete your practitioner profile and submit licenses for verification to unlock client requests.'}
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => startRegistration(portal === 'business' ? 'Sports Corporation' : 'Sports Professional')}
+              className="btn-primary text-xs py-2 px-4 whitespace-nowrap shrink-0"
+            >
+              CONTINUE REGISTRATION
+            </button>
+          </div>
+        )}
         {isMobileFrame ? (
           <div className="flex flex-col items-center justify-center my-2">
             <div className="text-[11px] font-mono text-[var(--muted-color)] mb-3 flex items-center gap-2">

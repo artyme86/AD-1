@@ -117,3 +117,160 @@ export interface Dependent {
   sport: string;
   skillLevel?: string;
 }
+
+// Repeatable registration form data models
+export interface SocialLinkEntry {
+  id: string;
+  platform: string;
+  url: string;
+}
+
+export interface LanguageEntry {
+  id: string;
+  language: string;
+  proficiency: 'Basic' | 'Conversational' | 'Fluent' | 'Native';
+}
+
+export interface DegreeEntry {
+  id: string;
+  school: string;
+  degree: string;
+  fieldOfStudy: string;
+  startDate: string;
+  graduationYear: string;
+  description: string;
+}
+
+export interface CertificationEntry {
+  id: string;
+  name: string;
+  issuingBody: string;
+  year: string;
+  certificateFileName?: string;
+  status: 'Pending verification' | 'Verified';
+}
+
+export interface AwardEntry {
+  id: string;
+  name: string;
+  institution: string;
+  year: string;
+}
+
+export interface AccomplishmentEntry {
+  id: string;
+  year: string;
+  description: string;
+}
+
+export interface WorkExperienceEntry {
+  id: string;
+  title: string;
+  companyOrClub: string;
+  currentlyWorkingHere: boolean;
+  startDate: string;
+  endDate: string;
+  description: string;
+}
+
+// Registration Draft State across the 8-step wizard
+export interface RegistrationDraft {
+  step: number;
+  listingType: 'Sports Professional' | 'Sports Corporation' | '';
+  // R2
+  professionalType: string;
+  corporationType: string;
+  // R3
+  firstName: string;
+  lastName: string;
+  country: string;
+  nationality: string;
+  gender: 'Male' | 'Female' | 'Prefer not to say' | '';
+  bio: string;
+  hideDemographicsOnPublicProfile: boolean;
+  corporationTitle: string;
+  tagline: string;
+  description: string;
+  registeredCity: string;
+  // R4
+  email: string;
+  phone: string;
+  whatsapp: string;
+  whatsappSameAsPhone: boolean;
+  website: string;
+  locationServingAreas: string[];
+  socialLinks: SocialLinkEntry[];
+  // R5
+  position: string;
+  sport: string;
+  specialty: string;
+  cvFileName: string;
+  primaryCategory: string;
+  secondaryCategory: string;
+  customCategory: string;
+  serviceTools: string[];
+  // R6
+  athleteSkillLevels: string[];
+  ageGroups: string[];
+  genderServed: 'Any' | 'Male' | 'Female';
+  deliveryFormats: string[];
+  languages: LanguageEntry[];
+  // R7
+  degrees: DegreeEntry[];
+  certifications: CertificationEntry[];
+  awards: AwardEntry[];
+  accomplishments: AccomplishmentEntry[];
+  workExperience: WorkExperienceEntry[];
+  // R8
+  profilePictureUrl: string;
+  galleryImages: string[];
+  agreeTerms: boolean;
+}
+
+// Initial pristine registration draft state
+export const INITIAL_REGISTRATION_DRAFT: RegistrationDraft = {
+  step: 1,
+  listingType: '',
+  professionalType: '',
+  corporationType: '',
+  firstName: '',
+  lastName: '',
+  country: 'Qatar',
+  nationality: 'Qatari',
+  gender: '',
+  bio: '',
+  hideDemographicsOnPublicProfile: false,
+  corporationTitle: '',
+  tagline: '',
+  description: '',
+  registeredCity: 'Doha',
+  email: '',
+  phone: '',
+  whatsapp: '',
+  whatsappSameAsPhone: true,
+  website: '',
+  locationServingAreas: ['Doha Central'],
+  socialLinks: [],
+  position: '',
+  sport: 'Football',
+  specialty: '',
+  cvFileName: '',
+  primaryCategory: '',
+  secondaryCategory: '',
+  customCategory: '',
+  serviceTools: [],
+  athleteSkillLevels: ['All Levels'],
+  ageGroups: ['All Ages'],
+  genderServed: 'Any',
+  deliveryFormats: ['In-Person Private'],
+  languages: [{ id: 'lang-1', language: 'Arabic', proficiency: 'Native' }, { id: 'lang-2', language: 'English', proficiency: 'Fluent' }],
+  degrees: [],
+  certifications: [],
+  awards: [],
+  accomplishments: [],
+  workExperience: [],
+  profilePictureUrl: '',
+  galleryImages: [],
+  agreeTerms: false
+};
+
