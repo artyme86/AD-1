@@ -1,0 +1,6 @@
+{
+  "name": "Athlete Directory",
+  "description": "Verified registry and marketplace for the sports industry with B2B facility tenders, club coaching recruitment, and private coach matching.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
