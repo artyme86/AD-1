@@ -86,7 +86,7 @@ export const AcademicPortal: React.FC = () => {
             Register Interest
           </h2>
           <p className="text-xs text-[var(--muted-color)] mt-1">
-            Institutional partners and research laboratories can pre-register for upcoming cohort calls and biomechanics validation protocols.
+            Tell us what you need. We are defining the first research and testing requests with institutions.
           </p>
         </div>
 

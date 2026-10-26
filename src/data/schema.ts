@@ -96,7 +96,7 @@ export interface Response {
   submittedAt: string;
 }
 
-// Binding engagement linking an awarded Request to its accepted Response with step-by-step lifecycle status.
+// Contractual engagement linking an awarded Request to its accepted Response with step-by-step lifecycle status.
 export interface Agreement {
   id: string;
   requestId: string;

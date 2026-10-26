@@ -235,7 +235,7 @@ export const LandingScreen: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center justify-between text-[11px] font-mono text-[var(--muted-color)] border-t border-[var(--border-color)]/50 pt-2">
-              <span>SAFESPORT CHILD PROTECTION</span>
+              <span>CHILD PROTECTION & SAFEGUARDING</span>
               <span className="text-blue-400 font-bold">100% ID Verified</span>
             </div>
           </div>
@@ -315,11 +315,11 @@ export const LandingScreen: React.FC = () => {
                 Accredited Coaching Licenses
               </h4>
               <p className="text-xs text-[var(--muted-color)] leading-relaxed">
-                Direct validation with AFC, UEFA, ITF, and World Aquatics governing bodies. Every coach carries SafeSport child protection certification.
+                Direct validation with AFC, UEFA, ITF, and World Aquatics governing bodies. Every coach carries accredited child protection certification.
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-[var(--border-color)] flex items-center justify-between text-[10px] font-mono text-[var(--muted-color)]">
-              <span>SafeSport Level 2</span>
+              <span>Safeguarding Level 2</span>
               <span className="text-emerald-500 font-bold">Police Clearance Active</span>
             </div>
           </div>

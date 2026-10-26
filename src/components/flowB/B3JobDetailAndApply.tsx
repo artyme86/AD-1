@@ -160,7 +160,7 @@ export const B3JobDetailAndApply: React.FC = () => {
                   <span className="font-mono-label block text-[10px] text-[var(--muted-color)]">ATTACHED PROFILE</span>
                   <div className="font-bold text-[var(--heading-color)]">{coach.name}</div>
                   <div className="text-[11px] text-[var(--muted-color)]">
-                    AFC B License · First Aid · SafeSport Verified
+                    AFC B License · First Aid · Certified Specialist
                   </div>
                 </div>
 

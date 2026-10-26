@@ -62,7 +62,7 @@ export const C1FindCoach: React.FC = () => {
               Parent Safeguarding Guarantee
             </span>
             <span className="block text-[11px] text-[var(--muted-color)]">
-              100% of listed coaches hold Qatar MOI criminal background clearance and accredited child protection certifications.
+              100% of listed coaches hold background clearance and accredited child protection certifications.
             </span>
           </div>
         </div>

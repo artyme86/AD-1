@@ -84,6 +84,25 @@ export const RegistrationWizard: React.FC = () => {
           stepErrors.primaryCategory = 'Please select your primary service or facility classification.';
         }
       }
+    } else if (step === 7) {
+      for (const cert of registrationDraft.certifications) {
+        if (!cert.name.trim() || !cert.issuingBody.trim()) {
+          stepErrors.certifications = 'Every certification card must include both a certification name and issuing body.';
+          break;
+        }
+      }
+      for (const deg of registrationDraft.degrees) {
+        if (!deg.school.trim() || !deg.degree.trim()) {
+          stepErrors.degrees = 'Every degree card must include both a school name and degree title.';
+          break;
+        }
+      }
+      for (const exp of registrationDraft.workExperience) {
+        if (!exp.title.trim() || !exp.companyOrClub.trim()) {
+          stepErrors.workExperience = 'Every work experience card must include both a position title and company name.';
+          break;
+        }
+      }
     } else if (step === 8) {
       if (!registrationDraft.agreeTerms) {
         stepErrors.agreeTerms = 'Please review and accept the directory terms and safeguarding protocols.';

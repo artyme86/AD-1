@@ -34,7 +34,7 @@ export interface Supplier {
   category: string;
   verified: boolean;
   verificationDetails: VerificationDetails;
-  bid: SupplierBid;
+  bid?: SupplierBid;
 }
 
 export interface Vacancy {
@@ -174,9 +174,9 @@ export const INITIAL_SUPPLIERS: Supplier[] = [
     verificationDetails: {
       crNumber: "CR-782914-QA",
       verifiedDate: "14 Jan 2024",
-      authority: "Ministry of Commerce & Industry Qatar",
+      authority: "Commercial Registration Authority",
       accreditations: ["installer qualification, to be stated by the bidder", "ISO 9001:2015", "Technical Facility Approved"],
-      safeguardingClearance: "Verified by Qatar Sports Authority"
+      safeguardingClearance: "Verified by Sports Authority"
     },
     bid: {
       priceQar: 840000,
@@ -197,9 +197,9 @@ export const INITIAL_SUPPLIERS: Supplier[] = [
     verificationDetails: {
       crNumber: "CR-920183-QA",
       verifiedDate: "03 Mar 2024",
-      authority: "Ministry of Commerce & Industry Qatar",
+      authority: "Commercial Registration Authority",
       accreditations: ["relevant international quality certification, to be stated by the bidder", "ESTC European Synthetic Turf Council", "ISO 14001:2015"],
-      safeguardingClearance: "Verified by Qatar Sports Authority"
+      safeguardingClearance: "Verified by Sports Authority"
     },
     bid: {
       priceQar: 920000,
@@ -222,7 +222,7 @@ export const INITIAL_SUPPLIERS: Supplier[] = [
       verifiedDate: "28 Nov 2023",
       authority: "Qatar Commerce Licensing Authority",
       accreditations: ["Accredited Sports Contractor", "SAPCA Certified", "ISO 45001 Safety"],
-      safeguardingClearance: "Verified by Qatar Sports Authority"
+      safeguardingClearance: "Verified by Sports Authority"
     },
     bid: {
       priceQar: 960000,
@@ -256,7 +256,7 @@ export const INITIAL_VACANCIES: Vacancy[] = [
       "Valid AFC/UEFA 'B' or equivalent national governing body license, as recognised by the hiring club",
       "Minimum 4 years coaching players aged 9–12 in an accredited academy",
       "Demonstrated knowledge of technical ball mastery and positional play fundamentals",
-      "Clear background check & valid First Aid/SafeSport credentials"
+      "Clear background check & valid First Aid/Safeguarding credentials"
     ],
     responsibilities: [
       "Plan and lead 4 weekly training sessions and weekend league matches",
@@ -365,17 +365,17 @@ export const INITIAL_COACHES: Coach[] = [
       licenseNumber: "QFA/AFC-B-2022-8819",
       licenseChecked: "AFC 'B' License (as recognised by the hiring club, valid through 2027)",
       policeClearance: "Good Conduct Certificate (Ministry of Interior Qatar, Jan 2026)",
-      safeguarding: "SafeSport International Child Protection in Athletics (Level 2)",
+      safeguarding: "Child Protection in Athletics (Level 2)",
       firstAid: "Qatar Red Crescent Pediatric First Aid & AED (Expires Nov 2027)",
       authority: "National Football Association & Ministry of Youth and Sports",
       verifiedDate: "12 Jan 2024",
-      accreditations: ["AFC 'B' License", "Grassroots Diploma", "SafeSport Certified"],
+      accreditations: ["AFC 'B' License", "Grassroots Diploma", "Safeguarding Certified"],
       safeguardingClearance: "Child Protection Clearance Active"
     },
     licenses: [
       { title: "AFC / QFA 'B' License", issuer: "Qatar Football Association", status: "Verified", year: "2022" },
       { title: "UEFA Grassroots Coaching Diploma", issuer: "The FA (UK)", status: "Verified", year: "2020" },
-      { title: "SafeSport Child Protection & Safeguarding", issuer: "SafeSport International", status: "Verified", year: "2024" },
+      { title: "Child Protection & Safeguarding", issuer: "International Sports Safeguarding", status: "Verified", year: "2024" },
       { title: "Pediatric First Aid & CPR", issuer: "Qatar Red Crescent", status: "Verified", year: "2024" },
       { title: "AFC Youth Specialist Diploma", issuer: "AFC", status: "Pending", year: "2026" }
     ],
@@ -407,18 +407,18 @@ export const INITIAL_COACHES: Coach[] = [
       idChecked: "Qatar National ID verified",
       licenseNumber: "QFA/AFC-C-2023-4102",
       licenseChecked: "AFC 'C' License & Grassroots Leader (as recognised by the hiring club)",
-      policeClearance: "Ministry of Interior Qatar Clearance (Feb 2026)",
+      policeClearance: "Background Clearance (Feb 2026)",
       safeguarding: "Child Safeguarding in Sport Certified",
       firstAid: "Valid Red Crescent First Aid",
       authority: "Qatar Football Association",
       verifiedDate: "04 Feb 2024",
-      accreditations: ["AFC 'C' License", "Youth Grassroots Certificate", "SafeSport Certified"],
+      accreditations: ["AFC 'C' License", "Youth Grassroots Certificate", "Safeguarding Certified"],
       safeguardingClearance: "Child Protection Clearance Active"
     },
     licenses: [
       { title: "AFC 'C' License", issuer: "QFA", status: "Verified", year: "2023" },
       { title: "Youth Grassroots Certificate", issuer: "National Association", status: "Verified", year: "2021" },
-      { title: "Child Safeguarding in Sport", issuer: "SafeSport", status: "Verified", year: "2024" }
+      { title: "Child Safeguarding in Sport", issuer: "Safeguarding Institute", status: "Verified", year: "2024" }
     ],
     experience: [
       { period: "2022 – Present", role: "Junior Skills Coach", organization: "Harbor City Foundation (Sample)", details: "1-on-1 dribbling, first touch, and speed agility drills." }
@@ -447,7 +447,7 @@ export const INITIAL_COACHES: Coach[] = [
       idChecked: "Qatar Residence Permit verified",
       licenseNumber: "UEFA-A-2019-092",
       licenseChecked: "UEFA 'A' Youth License (as recognised by the hiring club)",
-      policeClearance: "Interpol & Qatar MOI verified",
+      policeClearance: "Interpol & Background Clearance Verified",
       safeguarding: "Advanced Child Protection Certificate",
       firstAid: "Sports Trauma & First Aid Level 3",
       authority: "National Football Association & QFA",
@@ -487,7 +487,7 @@ export const INITIAL_COACHES: Coach[] = [
       idChecked: "Qatar Residence Permit verified",
       licenseNumber: "WA-L2-2021-331",
       licenseChecked: "World Aquatics Level 2 Coach (as recognised by the hiring club)",
-      policeClearance: "Ministry of Interior Qatar Clearance (Dec 2025)",
+      policeClearance: "Background Clearance (Dec 2025)",
       safeguarding: "Child Safeguarding in Aquatics Certified",
       firstAid: "Lifeguard & CPR Specialist",
       authority: "World Aquatics & Qatar Swimming Association",
@@ -526,7 +526,7 @@ export const INITIAL_COACHES: Coach[] = [
       idChecked: "Qatar Residence Permit verified",
       licenseNumber: "ITF-2-2022-772",
       licenseChecked: "ITF Level 2 Performance Coach (as recognised by the hiring club)",
-      policeClearance: "Qatar MOI Clearance (Nov 2025)",
+      policeClearance: "Background Clearance (Nov 2025)",
       safeguarding: "LTA Child Protection & Safeguarding",
       firstAid: "CPR & AED Certified",
       authority: "International Tennis Board & QTF",

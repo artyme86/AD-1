@@ -844,40 +844,83 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const computeProfileCompleteness = (draft: RegistrationDraft): number => {
+    let filled = 0;
+    const total = 7;
+
+    // 1. Listing & Category
+    if (draft.listingType && (draft.professionalType || draft.corporationType)) filled++;
+
+    // 2. Identity / Basic Info
+    if (draft.listingType === 'Sports Professional') {
+      if (draft.firstName.trim() && draft.lastName.trim() && draft.bio.trim()) filled++;
+    } else {
+      if (draft.corporationTitle.trim() && draft.description.trim()) filled++;
+    }
+
+    // 3. Contact Info
+    if (draft.email.trim() && draft.phone.trim()) filled++;
+
+    // 4. Service Classification
+    if (draft.listingType === 'Sports Professional') {
+      if (draft.position && draft.sport) filled++;
+    } else {
+      if (draft.primaryCategory || draft.corporationType) filled++;
+    }
+
+    // 5. Service Preferences
+    if (draft.deliveryFormats.length > 0 && draft.languages.length > 0) filled++;
+
+    // 6. Credentials & Experience
+    if (
+      draft.certifications.length > 0 ||
+      draft.workExperience.length > 0 ||
+      draft.degrees.length > 0 ||
+      draft.awards.length > 0
+    ) filled++;
+
+    // 7. Media / Terms
+    if (draft.profilePictureUrl || draft.agreeTerms) filled++;
+
+    return Math.min(100, Math.max(15, Math.round((filled / total) * 100)));
+  };
+
   const registrationCompleteness = isRegistrationSubmitted
     ? 100
-    : Math.min(100, Math.round((registrationDraft.step / 8) * 100));
+    : computeProfileCompleteness(registrationDraft);
 
   const submitRegistration = () => {
     setIsRegistrationSubmitted(true);
     const timestamp = Date.now();
+    const completeness = computeProfileCompleteness(registrationDraft);
 
     if (registrationDraft.listingType === 'Sports Professional') {
+      const userCerts = registrationDraft.certifications.map((c) => `${c.name} (${c.issuingBody})`);
       const newCoachId = `coach-reg-${timestamp}`;
       const newCoach: Coach = {
         id: newCoachId,
-        name: `${registrationDraft.firstName} ${registrationDraft.lastName} (Sample)`,
-        headline: registrationDraft.specialty || registrationDraft.position || 'Sports Professional',
+        name: `${registrationDraft.firstName} ${registrationDraft.lastName}`.trim() || 'Sports Professional',
+        headline: registrationDraft.specialty || registrationDraft.position || registrationDraft.professionalType || 'Sports Professional',
         sport: registrationDraft.sport || 'Football',
-        ageGroups: registrationDraft.ageGroups.length > 0 ? registrationDraft.ageGroups : ['7–9', '10–12'],
+        ageGroups: registrationDraft.ageGroups.length > 0 ? registrationDraft.ageGroups : ['All Ages'],
         location: registrationDraft.locationServingAreas[0] ? `${registrationDraft.locationServingAreas[0]}, Qatar` : `${registrationDraft.country || 'Qatar'}`,
         sessionFormats: registrationDraft.deliveryFormats.length > 0
           ? registrationDraft.deliveryFormats.map((f) => (f.includes('Online') ? 'Online' : 'In person'))
           : ['In person'],
-        pricePerSessionQar: 260,
-        profileCompleteness: 95,
+        pricePerSessionQar: 0,
+        profileCompleteness: completeness,
         verified: false,
         verificationDetails: {
-          idChecked: 'Passport & QID Uploaded (Pending Review)',
-          licenseNumber: registrationDraft.certifications[0]?.name || 'REG-PENDING-001',
-          licenseChecked: `${registrationDraft.certifications[0]?.name || registrationDraft.position || 'Accredited Specialist'} (Pending Governing Body Audit)`,
-          policeClearance: 'Good Conduct Clearance (Pending MOI Verification)',
-          safeguarding: 'SafeSport Clearance in review',
-          firstAid: 'Emergency First Aid (Pending review)',
-          authority: registrationDraft.certifications[0]?.issuingBody || 'Qatar Sports Authority Queue',
-          verifiedDate: 'Pending Verification',
-          accreditations: registrationDraft.certifications.map((c) => c.name),
-          safeguardingClearance: 'Pending Child Protection Audit'
+          idChecked: 'Verification status: Pending review',
+          licenseNumber: registrationDraft.certifications[0]?.name || 'Pending',
+          licenseChecked: 'Verification status: Pending review',
+          policeClearance: 'Verification status: Pending review',
+          safeguarding: 'Verification status: Pending review',
+          firstAid: 'Verification status: Pending review',
+          authority: registrationDraft.certifications[0]?.issuingBody || 'Verification status: Pending review',
+          verifiedDate: 'Verification status: Pending review',
+          accreditations: userCerts.length > 0 ? userCerts : ['Verification status: Pending review'],
+          safeguardingClearance: 'Verification status: Pending review'
         },
         licenses: registrationDraft.certifications.map((c) => ({
           title: c.name,
@@ -893,7 +936,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         })),
         languages: registrationDraft.languages.map((l) => `${l.language} (${l.proficiency})`),
         availability: 'Available upon request',
-        preferredRoles: [registrationDraft.position || 'Sports Professional'],
+        preferredRoles: [registrationDraft.position || registrationDraft.professionalType || 'Sports Professional'],
         bio: registrationDraft.bio,
         avatarUrl: registrationDraft.profilePictureUrl || '',
         reviewCount: 0,
@@ -901,31 +944,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         criteriaMatch: { license: false, ageGroup: true, location: true }
       };
 
-      setCoaches((prev) => [newCoach, ...prev]);
+      // Only add to the coach list when professionalType is "Coaching-Training"
+      if (registrationDraft.professionalType === 'Coaching-Training') {
+        setCoaches((prev) => [newCoach, ...prev]);
+      }
       setLatestRegisteredEntityId(newCoachId);
+      setSelectedCoachForView(newCoachId);
     } else {
+      const userCerts = registrationDraft.certifications.map((c) => `${c.name} (${c.issuingBody})`);
       const newSupplierId = `sup-reg-${timestamp}`;
       const newSupplier: Supplier = {
         id: newSupplierId,
-        name: `${registrationDraft.corporationTitle} (Sample)`,
+        name: registrationDraft.corporationTitle || 'Registered Corporation',
         contactPerson: `${registrationDraft.firstName || 'Lead'} ${registrationDraft.lastName || 'Representative'}`,
         location: `${registrationDraft.registeredCity || 'Doha'}, Qatar`,
         category: registrationDraft.primaryCategory || registrationDraft.corporationType || 'Sports Facilities',
         verified: false,
         verificationDetails: {
-          crNumber: 'CR-PENDING-8821',
-          verifiedDate: 'Pending Verification',
-          authority: 'Ministry of Commerce & Industry Audit Queue',
-          accreditations: registrationDraft.certifications.map((c) => c.name),
-          safeguardingClearance: 'Commercial compliance review active'
-        },
-        bid: {
-          priceQar: 880000,
-          product: registrationDraft.tagline || 'Custom Corporate Package',
-          deliveryWeeks: 6,
-          warrantyYears: 10,
-          tag: 'Standard',
-          notes: registrationDraft.description
+          crNumber: 'Verification status: Pending review',
+          verifiedDate: 'Verification status: Pending review',
+          authority: 'Verification status: Pending review',
+          accreditations: userCerts.length > 0 ? userCerts : ['Verification status: Pending review'],
+          safeguardingClearance: 'Verification status: Pending review'
         }
       };
 
@@ -934,7 +974,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     setFlowStep('reg-success');
-    showToast('Registration dossier received. Profile status: Pending verification.');
+    showToast('Registration dossier received. Profile status: Pending review.');
   };
 
   const verifyLatestRegistration = () => {
@@ -954,7 +994,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             verificationDetails: {
               ...c.verificationDetails,
               verifiedDate: 'Audited & Verified Today',
-              safeguardingClearance: 'Approved by State Sports Authority'
+              safeguardingClearance: 'Audited & Approved'
             },
             licenses: c.licenses.map((l) => ({ ...l, status: 'Verified' as const }))
           };

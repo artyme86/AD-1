@@ -35,12 +35,16 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose }) => {
 
         {/* Content */}
         <div className="p-6 overflow-y-auto space-y-4 text-xs text-[var(--muted-color)] leading-relaxed">
+          <div className="p-3 bg-[var(--inset-bg)] border border-[var(--border-color)] text-[var(--heading-color)] font-mono text-xs">
+            Draft terms for the prototype. Final terms will be reviewed by legal counsel before launch.
+          </div>
+
           <div>
             <h4 className="font-bold text-[var(--heading-color)] text-sm mb-1">
               1. Registry Verification & Audit Authority
             </h4>
             <p>
-              By submitting this registration dossier, you confirm that all stated coaching licenses, academic degrees, commercial certificates, and corporate authorities are authentic. All credentials undergo independent governing body verification before obtaining accredited directory status.
+              Draft terms for profile information and credential representation across directory listings.
             </p>
           </div>
 
@@ -49,7 +53,7 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose }) => {
               2. Safeguarding and Child Protection
             </h4>
             <p>
-              For youth coaching and sports instruction involving minors (ages 7 to 17), valid background clearance and SafeSport accreditation are mandatory prerequisites for direct booking activations.
+              Draft terms regarding safety standards and participant protection policies for youth activities.
             </p>
           </div>
 
@@ -58,7 +62,7 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose }) => {
               3. Privacy & Search Visibility
             </h4>
             <p>
-              Country, nationality, and gender selections are utilized strictly for search criteria filtering. You retain continuous administrative control over which demographic attributes appear on your public directory profile.
+              Draft terms outlining data preferences, search filtering, and public profile visibility choices.
             </p>
           </div>
 
@@ -67,7 +71,7 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose }) => {
               4. Commercial Integrity & Tenders
             </h4>
             <p>
-              Corporate suppliers and facility contractors are evaluated on documented civil specifications, ISO standards, and proven after-sales service warranties. Bids submitted via the directory are binding for the stated delivery period.
+              Draft terms covering tender submissions, procurement proposals, and vendor interactions.
             </p>
           </div>
         </div>

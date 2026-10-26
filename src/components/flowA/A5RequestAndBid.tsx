@@ -293,7 +293,7 @@ export const A5RequestAndBid: React.FC = () => {
                   ) : (
                     <>
                       <Send className="w-3.5 h-3.5" />
-                      <span>SUBMIT BINDING BID (QAR)</span>
+                      <span>SUBMIT COMMERCIAL TENDER BID (QAR)</span>
                     </>
                   )}
                 </button>

@@ -404,7 +404,7 @@ export const R7Credentials: React.FC<R7Props> = () => {
                   type="text"
                   value={certForm.name}
                   onChange={(e) => setCertForm({ ...certForm, name: e.target.value })}
-                  placeholder="e.g. AFC B Coaching License, UEFA Pro, SafeSport Level 2"
+                  placeholder="e.g. AFC B Coaching License, UEFA Pro, Grassroots Level 2"
                   className="input-field w-full min-h-[44px] text-xs"
                 />
               </div>
@@ -416,7 +416,7 @@ export const R7Credentials: React.FC<R7Props> = () => {
                   type="text"
                   value={certForm.issuingBody}
                   onChange={(e) => setCertForm({ ...certForm, issuingBody: e.target.value })}
-                  placeholder="e.g. Qatar Football Association, World Aquatics, SafeSport"
+                  placeholder="e.g. Qatar Football Association, World Aquatics, National Federation"
                   className="input-field w-full min-h-[44px] text-xs"
                 />
               </div>

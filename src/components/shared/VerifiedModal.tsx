@@ -52,7 +52,7 @@ export const VerifiedModal: React.FC = () => {
               <div>
                 <span className="font-mono-label block text-[10px] text-[var(--muted-color)]">COMMERCIAL REGISTRATION & AUDIT</span>
                 <span className="font-semibold">{details.crNumber}</span>
-                <span className="block text-[11px] text-[var(--muted-color)]">Issued by {details.authority || 'Ministry of Commerce & Industry'}</span>
+                <span className="block text-[11px] text-[var(--muted-color)]">Issued by {details.authority || 'Commercial Registration Authority'}</span>
               </div>
             </div>
           )}
